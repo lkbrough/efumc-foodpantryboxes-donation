@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>EFUMC Pumpkin Bread Sales</title>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style type="text/css">
+		/* Move down content because we have a fixed navbar that is 3.5rem tall */
+		body {
+		  padding-top: 5.0rem;
+		}
+	</style>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+</head>
+<body>
+	<%= erb :navigation %>
+
+	<main role="main">
+		<div class="container">
+			<% if flash[:success] %>
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+				  <%= flash[:success] %>
+				  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				    <span aria-hidden="true">&times;</span>
+				  </button>
+				</div>
+			<% end %>
+
+			<% if flash[:error] %>
+				<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				  <%= flash[:error] %>
+				  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				    <span aria-hidden="true">&times;</span>
+				  </button>
+				</div>
+			<% end %>
+		</div>
+		<%= yield %>
+	</main>
+
+	<div></div>
+	<p></p>
+
+	<footer class="container">
+		<p>&copy; Edinburg First United Methodist Church 2020</p>
+	</footer>
+</body>
+</html>
