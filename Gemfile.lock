@@ -1,14 +1,29 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    domain_name (0.5.20180417)
+      unf (>= 0.0.5, < 1.0.0)
+    ffi (1.10.0-x86-mingw32)
+    http-cookie (1.0.3)
+      domain_name (~> 0.5)
+    mailgun (0.11)
+    mime-types (3.2.2)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2018.0812)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
+    netrc (0.11.0)
     paypal-checkout-sdk (1.0.3)
       paypalhttp (~> 1.0.0)
     paypalhttp (1.0.0)
     rack (2.2.3)
     rack-protection (2.1.0)
       rack
+    rest-client (2.0.2-x86-mingw32)
+      ffi (~> 1.9)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
     ruby2_keywords (0.0.2)
     sinatra (2.1.0)
       mustermann (~> 1.0)
@@ -18,12 +33,17 @@ GEM
     sinatra-flash (0.3.0)
       sinatra (>= 1.0.0)
     tilt (2.0.10)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.5-x86-mingw32)
 
 PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+  mailgun
   paypal-checkout-sdk
+  rest-client
   sinatra
   sinatra-flash
 
