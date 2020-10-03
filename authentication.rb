@@ -25,6 +25,7 @@ class Lockdown
 		if @@last_reset.yday != Time.now.yday && Time.now.wday == 0
 			@@last_reset = Time.now
 			@@ld = false
+			@@weekly_bread_sales = 0
 			lockdown!
 		end
 	end

@@ -1,7 +1,6 @@
 require 'rubygems'
 require "sinatra"
 require "sinatra/flash"
-require 'mailgun'
 require 'rest-client'
 
 # pickup window instead of delivery | X
@@ -31,6 +30,7 @@ set :private_key, ENV['MAILGUN_API_KEY']
 
 require_relative "authentication.rb"
 require_relative "payments.rb"
+require_relative "email.rb"
 
 get "/" do
 	session.clear
@@ -103,23 +103,13 @@ get "/confirm_purchase" do
 		@small_price = ENV['SMALL_PRICE'].to_i
 		@large_price = ENV['LARGE_PRICE'].to_i
 		@shipping_rate = ENV['HANDLING_RATE'].to_i
-		private_key = ENV['MAILGUN_API_KEY']
-		church_email = ENV['CHURCH_EMAIL']
-		mailgun_url = ENV['MAILGUN_URL']
-		mailgun_domain = ENV['MAILGUN_DOMAIN']
-		puts "https://api:#{private_key}@api.mailgun.net/v3/#{mailgun_domain}/messages"
-		puts session[:email].to_s.downcase+", "+church_email.to_s.downcase
 
-		RestClient.post "https://api:#{private_key}"\
-		"@api.mailgun.net/v3/#{mailgun_domain}/messages",
-	  	:from => "EFUMC Pumpkin Bread Orders <mailgun@#{mailgun_domain}>",
-	  	:to => session[:email].to_s.downcase+", "+church_email.to_s.downcase,
-	  	:subject => "Your Pumpkin Bread Order has been placed!",
-	  	:text => "Thank you, #{session[:fname]} #{session[:lname]}, for your order of #{session[:large]} large loaves of pumpkin bread and #{session[:small]} small pumpkin bread! You'll be receiving your order hand-delivered by a member of the congregation within a week! Your total, including handling, was $#{((session[:large]*@large_price + session[:small]*@small_price)+@shipping_rate)}. Thank you for your purchase which supports scholarship singers at our church!".to_s
-	  	
 	  	$ld.add(session[:small]+session[:large])
 	  	order = Order.new(session[:fname], session[:lname], session[:small], session[:large])
-	  	$orders[order.order_number] = order
+		$orders[order.order_number] = order
+		
+		emailer = EmailSender.new(session[:email], order.order_number, session[:large], session[:small], session[:fname], session[:lname])
+		emailer.mailgun_send_email
 
 	  	session.clear
 
