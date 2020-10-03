@@ -56,7 +56,7 @@ class Order
 	@@no_orders = 0
 
 	def initialize(fname, lname, small, large)
-		@order_number = "%03d" % [Time.now.yday.to_s] + "%02d" % [Time.now.hour.to_s] + "%02d" % [Time.now.hour.to_s] + "%02d" % [Time.now.hour.to_s] + fname[0].ord.to_s + lname[0].ord.to_s
+		@order_number = "%03d" % [Time.now.yday.to_s] + "%02d" % [Time.now.hour.to_s] + "%02d" % [Time.now.minute.to_s] + "%02d" % [Time.now.second.to_s] + fname[0].ord.to_s + lname[0].ord.to_s
 		@orderer = "#{fname} #{lname}"
 		@small_loaves = small
 		@large_loaves = large
@@ -116,6 +116,7 @@ get "/dashboard" do
 	@weekly_bread_sales = $ld.weekly_bread_sales
 	@max_bread_sales = ENV['MAX_LOAVES_PER_WEEK']
 	@download_csv_link = $url.to_s+"/orders.csv"
+	puts @download_csv_link
 	erb :dashboard
 end
 
@@ -146,4 +147,14 @@ post "/download_csv" do
 		end
 	end
 	redirect "/dashboard"
-end 
+end
+
+get "/download_csv" do
+	authenticate!
+	@str = ""
+	for order_pair in $orders do
+		@str += order_pair[1].to_csv.to_s
+		@str += "\n"
+	end
+	erb :"authentication/csv"
+end
