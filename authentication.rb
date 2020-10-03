@@ -2,6 +2,7 @@ require 'rubygems'
 require "sinatra"
 require "sinatra/flash"
 require "csv"
+require 'uri'
 
 class Lockdown
 	@@ld = false
@@ -75,6 +76,7 @@ end
 
 $ld = Lockdown.new
 $orders = Hash.new(nil)
+$url ||= "#{ENV['rack.url_scheme']}://#{ENV['HTTP_HOST']}"
 
 def authenticate!
 	if !session[:church] && ENV['logged']
@@ -113,6 +115,7 @@ get "/dashboard" do
 	@lockdown = $ld.ld
 	@weekly_bread_sales = $ld.weekly_bread_sales
 	@max_bread_sales = ENV['MAX_LOAVES_PER_WEEK']
+	@download_csv_link = $url.to_s+"/orders.csv"
 	erb :dashboard
 end
 

@@ -90,8 +90,7 @@ get "/checkout" do
 		@units="[{amount: {value: \'#{(@large_loaves*@large_price)+(@small_loaves*@small_price)+@shipping_rate}\'}}]"
 
 		@paypal_client_url = ENV['PAYPAL_CLIENT_URL'].to_s + ENV['PAYPAL_CLIENT_ID'].to_s
-		puts(@units)
-		puts(@paypal_client_url)
+		@url = "\""+$url+"/confirm_purchase\""
 		erb :checkout
 	else
 		redirect "/cart"
