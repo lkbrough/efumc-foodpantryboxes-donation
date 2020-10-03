@@ -35,7 +35,7 @@ require_relative "email.rb"
 get "/" do
 	session.clear
 	ENV['logged'] = false.to_s
-	redirect "/cart"
+	erb :home
 end
 
 get "/cart" do
