@@ -146,6 +146,18 @@ post "/process_user" do
 	end
 end
 
-post "/process_cart" do
-	
+get "/quick_order" do
+	order = Order.new("Bob", "Boberson", 0, 2)
+	$orders[order.order_number] = order
+	$ld.add(order.small+order.large)
+
+	redirect "/"
+end
+
+get "/quick_order_large" do
+	order = Order.new("Fred", "McRichson", 100, 52)
+	$orders[order.order_number] = order
+	$ld.add(order.small+order.large)
+
+	redirect "/"
 end

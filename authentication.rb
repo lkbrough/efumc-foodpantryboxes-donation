@@ -64,9 +64,26 @@ class Order
 	end
 
 	def to_csv
-		csv = [@order_number, @orderer, @small, @large_loaves]
+		csv = [@order_number, @orderer, @small_loaves, @large_loaves]
 		puts csv
 		return csv
+	end
+
+	def to_table_rw
+		table = "<tr>"
+		table += "<td style=\"border:1px solid #000000;\">#{@order_number}</td>"
+		table += "<td style=\"border:1px solid #000000;\">#{@orderer}</td>"
+		table += "<td style=\"border:1px solid #000000;\">#{@small_loaves}</td>"
+		table += "<td style=\"border:1px solid #000000;\">#{@large_loaves}</td>"
+		table += "</tr>"
+	end
+		
+	def small
+		return @small_loaves
+	end
+	
+	def large
+		return @large_loaves
 	end
 
 	def order_number
@@ -85,8 +102,7 @@ def authenticate!
 end
 
 def login!
-	if !session[:church]
-		params[:password] = ENV['PASSWORD']
+	if !session[:church] && params[:password] == ENV['PASSWORD']
 		session[:church] = true
 		ENV['logged'] = true.to_s
 		authenticate!
@@ -149,12 +165,14 @@ post "/download_csv" do
 	redirect "/dashboard"
 end
 
-get "/download_csv" do
+get "/display_orders" do
 	authenticate!
-	@str = ""
+	@str = "<table width=75% style=\"border-collapse:collapse; border:1px solid #000000;\">"
+	@str += "<tr><td style=\"border:1px solid #000000;\">Order Number</td><td style=\"border:1px solid #000000;\">Orderer</td><td style=\"border:1px solid #000000;\">Small Loaves</td><td style=\"border:1px solid #000000;\">Large Loaves</td>"
 	for order_pair in $orders do
-		@str += order_pair[1].to_csv.to_s
+		@str += order_pair[1].to_table_rw.to_s
 		@str += "\n"
 	end
+	@str += "</table>"
 	erb :"authentication/csv"
 end
