@@ -174,5 +174,6 @@ get "/display_orders" do
 		@str += "\n"
 	end
 	@str += "</table>"
+	@date = Time.now
 	erb :"authentication/csv"
 end
