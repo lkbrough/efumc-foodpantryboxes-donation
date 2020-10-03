@@ -26,7 +26,7 @@ class EmailSender
             from: "EFUMC Pumpkin Bread Orders <mailgun@#{mailgun_domain}>",
             to: @email_user+", "+church_email.to_s.downcase,
             subject: "Your Pumpkin Bread Order has been placed!",
-            text: "Thank you #{@fname} #{@lname}, for your recent pumpkin bread order! By purchasing you are supporting our scholarship singers as well as getting a taste of a long run tradition for our church!  Your order number is #{@order_number}. Orders place between Friday and Monday will be avaliable for pickup the following Wednesday. Orders place between Tuesday and Thursday will be avaliable for pickup the following Saturday. If you miss three pickup times after your order is placed, expect a phone call reminder regarding your order. You ordered #{@large_amount} and #{@small_amount} for a total of #{(@large_amount*large_price)+(@small_amount*small_price)+1} including a dollar processing charge.",
+            text: "Thank you #{@fname} #{@lname}, for your recent pumpkin bread order! By purchasing you are supporting our scholarship singers as well as getting a taste of a long run tradition for our church!  Your order number is ##{@order_number}. Orders place between Friday and Monday will be avaliable for pickup the following Wednesday. Orders place between Tuesday and Thursday will be avaliable for pickup the following Saturday. If you miss three pickup times after your order is placed, expect a phone call reminder regarding your order. You ordered #{@large_amount} and #{@small_amount} for a total of #{(@large_amount*large_price)+(@small_amount*small_price)+1} including a dollar processing charge.",
             html: "<!DOCTYPE html>
             <html>
             <head>
@@ -37,18 +37,18 @@ class EmailSender
                 <style type=\"text/css\" media=\"screen\">
                     table{
                     border-collapse:collapse;
-                    border:1px solid #f7a406;
+                    border:1px solid #000000;
                     }
             
                     table td{
-                    border:1px solid #f7a406;
+                    border:1px solid #000000;
                     }
             
                     @import url(\'https://fonts.googleapis.com/css2?family=Epilogue:wght@300;400;700&family=Pacifico&display=swap\');
             
                     body {
                         background-color: #4d4b3d;
-                        color: #f7a406;
+                        color: #000000;
                         font-family: 'Epilogue';
                         font-size: 16px;
                     }
@@ -63,7 +63,7 @@ class EmailSender
             <body style=\"margin:0; padding:25px;\">
                 <h1>Thank you for your order!</h1>
                 <div>
-                    Thank you #{@fname.to_s.capitalize} #{@lname.to_s.capitalize}, for your recent pumpkin bread order! By purchasing you are supporting our scholarship singers as well as getting a taste of a long run tradition for our church! Your order number is <span style=\"color: #fc2323;\">#{@order_number}</span>
+                    Thank you #{@fname.to_s.capitalize} #{@lname.to_s.capitalize}, for your recent pumpkin bread order! By purchasing you are supporting our scholarship singers as well as getting a taste of a long run tradition for our church! Your order number is <span style=\"color: #fc2323;\">##{@order_number}</span>
                 </div>
                 <div>
                     <p>Orders place between Friday and Monday will be avaliable for pickup <span style=\"text-decoration: underline;\">the following Wednesday</span>.<br/>Orders place between Tuesday and Thursday will be avaliable for pickup <span style=\"text-decoration: underline;\">the following Saturday</span>. <br/>If you miss three pickup times after your order is placed, <span style=\"text-decoration: underline;\">expect a phone call reminder regarding your order.</span>
@@ -77,15 +77,15 @@ class EmailSender
                     </tr>
             
                     <tr>
-                        <td>Large (#{large_price})</td>
-                        <td>$#{@large_amount}</td>
-                        <td>#{@large_amount*large_price}</td>
+                        <td>Large ($#{large_price})</td>
+                        <td>#{@large_amount}</td>
+                        <td>$#{@large_amount*large_price}</td>
                     </tr>
             
                     <tr>
-                        <td>Small (#{small_price})</td>
-                        <td>$#{@small_amount}</td>
-                        <td>#{@small_amount*small_price}</td>
+                        <td>Small ($#{small_price})</td>
+                        <td>#{@small_amount}</td>
+                        <td>$#{@small_amount*small_price}</td>
                     </tr>
             
                     <tr>
