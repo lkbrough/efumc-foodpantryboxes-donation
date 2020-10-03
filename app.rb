@@ -4,11 +4,11 @@ require "sinatra/flash"
 require 'mailgun'
 require 'rest-client'
 
-# pickup window instead of delivery
-# order numbers
-# spreadsheet of orders
-# pickup window cut off
-# lockdown (for early orders and weekly loaves 150 per week) CHECK!
+# pickup window instead of delivery | X
+# order numbers | Check?
+# spreadsheet of orders | Check?
+# pickup window cut off | X
+# lockdown (for early orders and weekly loaves 150 per week) | CHECK!
 
 env_file = "config/local_env"
 f = File.exists?(env_file)?File.open(env_file):nil

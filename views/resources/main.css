@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@300;400;700&family=Pacifico&display=swap');
+
+body {
+	background-color: #4d4b3d;
+	color: #f7a406;
+}
+
+h1, navbar-brand {
+	font-family: 'Pacifico';
+	font-size: 24px;
+	color: #f7a406;
+}
+
+.container {
+	background-color: #4d4b3d;
+}

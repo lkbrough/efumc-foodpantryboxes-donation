@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		Pumpkin Bread Order Email
+	</title>
+	<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@300;400&family=Pacifico&display=swap" rel="stylesheet">
+	<style type="text/css" media="screen">
+		table{
+		border-collapse:collapse;
+		border:1px solid #f7a406;
+		}
+
+		table td{
+		border:1px solid #f7a406;
+		}
+
+		@import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@300;400;700&family=Pacifico&display=swap');
+
+		body {
+			background-color: #4d4b3d;
+			color: #f7a406;
+			font-family: 'Epilogue';
+			font-size: 16px;
+		}
+
+		h1 {
+			font-family: 'Pacifico';
+			font-size: 24px;
+			color: #f7a406;
+		}
+	</style>
+</head>
+<body style="margin:0; padding:25px;">
+	<h1>Thank you for your order!</h1>
+	<div>
+		Thank you {NAME}, for your recent pumpkin bread order! By purchasing you are supporting our scholarship singers as well as getting a taste of a long run tradition for our church!
+	</div>
+	<div>
+		<p>Orders place between Friday and Monday will be avaliable for pickup <span style="text-decoration: underline;">the following Wednesday</span>.<br/>Orders place between Tuesday and Thursday will be avaliable for pickup <span style="text-decoration: underline;">the following Saturday</span>. <br/>If you miss three pickup times after your order is placed, <span style="text-decoration: underline;">expect a phone call reminder regarding your order.</span>
+		</p>
+	</div>
+	<table width="75% ">
+		<tr>
+			<td>Pumpkin Bread</td>
+			<td>Amount</td>
+			<td>Cost</td>
+		</tr>
+
+		<tr>
+			<td>Large {LARGE COST}</td>
+			<td>{YOUR LARGE AMOUNT}</td>
+			<td>{LARGE COST}*{LARGE AMOUNT}</td>
+		</tr>
+
+		<tr>
+			<td>Small {SMALL COST}</td>
+			<td>{YOUR SMAILL AMOUNT}</td>
+			<td>{SMALL COST}*{SMALL AMOUNT}</td>
+		</tr>
+
+		<tr>
+			<td/>
+			<td>Total (With $1 processing fee)</td>
+			<td>((SMALL COST*SMALL AMOUNT)+(LARGE COST*LARGE AMOUNT)+1)</td>
+		</tr>
+	</table>
+	<footer class="container">
+		<p>&copy; Edinburg First United Methodist Church 2020</p>
+		<a href="https://www.facebook.com/EdinburgFUMC"><img src="./social/facebook-icon_32x32.png" alt="facebook icon"></a>
+		<a href="https://www.youtube.com/channel/UCRaaxQBAreFjfWsj9jaELSw"><img src="./social/youtube-icon_32x32.png" alt="youtube icon"></a>
+		<a href="https://www.edinburgfumc.org/"><img src="./social/church-icon_32x32.png" alt="church website icon"></a>
+	</footer>
+</body>
+</html>
