@@ -56,7 +56,7 @@ class Order
 	@@no_orders = 0
 
 	def initialize(fname, lname, small, large)
-		@order_number = "%03d" % [Time.now.yday.to_s] + "%02d" % [Time.now.hour.to_s] + "%02d" % [Time.now.minute.to_s] + "%02d" % [Time.now.second.to_s] + fname[0].ord.to_s + lname[0].ord.to_s
+		@order_number = "%03d" % [Time.now.yday.to_s] + "%02d" % [Time.now.hour.to_s] + "%02d" % [Time.now.min.to_s] + "%02d" % [Time.now.sec.to_s] + fname[0].ord.to_s + lname[0].ord.to_s
 		@orderer = "#{fname} #{lname}"
 		@small_loaves = small
 		@large_loaves = large
