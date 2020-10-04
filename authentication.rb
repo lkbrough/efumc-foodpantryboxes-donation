@@ -4,8 +4,6 @@ require "sinatra/flash"
 require "csv"
 require 'uri'
 
-$file = File.open('orders.csv')
-
 class Lockdown
 	@@ld = false
 	@@weekly_bread_sales = 0
@@ -140,6 +138,7 @@ end
 
 $ld = Lockdown.new
 $url ||= "#{ENV['rack.url_scheme']}://#{ENV['HTTP_HOST']}"
+File.new("orders.csv", 'a').close
 $file = OrderReaderWriter.new('orders.csv')
 $orders = $file.get_orders
 
