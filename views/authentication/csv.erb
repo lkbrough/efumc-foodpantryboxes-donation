@@ -1,4 +1,7 @@
 <div class="container">
     <h1><%= @date.month %>/<%= @date.day %>/<%= @date.year %> <%= @date.hour %>:<%= @date.min %></h1>
+    <form action="/process_order_pickups" method="POST">
     <%= @str %>
+    <input type="submit" value="Submit">
+    </form>
 </div>

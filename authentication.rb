@@ -4,6 +4,8 @@ require "sinatra/flash"
 require "csv"
 require 'uri'
 
+$file = File.open('orders.csv')
+
 class Lockdown
 	@@ld = false
 	@@weekly_bread_sales = 0
@@ -55,8 +57,8 @@ end
 class Order
 	@@no_orders = 0
 
-	def initialize(fname, lname, small, large)
-		@order_number = "%03d" % [Time.now.yday.to_s] + "%02d" % [Time.now.hour.to_s] + "%02d" % [Time.now.min.to_s] + "%02d" % [Time.now.sec.to_s] + fname[0].ord.to_s + lname[0].ord.to_s
+	def initialize(fname, lname, small, large, order_number = nil)
+		order_number.nil? ? @order_number = "%03d" % [Time.now.yday.to_s] + "%02d" % [Time.now.hour.to_s] + "%02d" % [Time.now.min.to_s] + "%02d" % [Time.now.sec.to_s] + fname[0].ord.to_s + lname[0].ord.to_s : @order_number = order_number
 		@orderer = "#{fname} #{lname}"
 		@small_loaves = small
 		@large_loaves = large
@@ -65,8 +67,12 @@ class Order
 
 	def to_csv
 		csv = [@order_number, @orderer, @small_loaves, @large_loaves]
-		puts csv
 		return csv
+	end
+
+	def to_comma_delimited
+		comma = "#{@order_number},#{@orderer},#{@small_loaves},#{@large_loaves}"
+		return comma
 	end
 
 	def to_table_rw
@@ -75,6 +81,7 @@ class Order
 		table += "<td style=\"border:1px solid #000000;\">#{@orderer}</td>"
 		table += "<td style=\"border:1px solid #000000;\">#{@small_loaves}</td>"
 		table += "<td style=\"border:1px solid #000000;\">#{@large_loaves}</td>"
+		table += "<td style=\"border:1px solid #000000;\"><input type=\"checkbox\" id=\"#{@order_number}\" name=\"#{@order_number}\" value=\"true\"></td>"
 		table += "</tr>"
 	end
 		
@@ -91,9 +98,50 @@ class Order
 	end
 end
 
+class OrderReaderWriter
+	def initialize(filename)
+		@filename = filename
+	end
+
+	def get_orders
+		orders = Hash.new(nil)
+		file = File.open(@filename , 'r') { |f|
+			f.each_line { |line|
+				line.chomp!
+				parts = line.split(',', 4)
+				name = parts[1].split(' ', 2)
+				order = Order.new(name[0], name[1], parts[2], parts[3], parts[0])
+				orders[order.order_number] = order
+			}
+		}
+		return orders
+	end
+
+	def write_orders(orders_checked)
+		# orders_checked is a two-dimensional array. Each line will have an order and a boolean. The order represents, of course, the order and the boolean represents if it was picked up or not. This will clear out the orders.csv and write it out fresh so that we have only orders that haven't been picked up
+		file = File.open(@filename, 'w') { |f|
+			orders_checked.each { |line|
+				if line.length != 2
+					return
+				end
+				if !line[1]
+					f.write(line[0].to_comma_delimited+"\n")
+				end
+			}
+		}
+	end
+
+	def add_order(order)
+		file = File.open(@filename, 'a') { |f|
+			f.write(order.to_comma_delimited+"\n")
+		}
+	end
+end
+
 $ld = Lockdown.new
-$orders = Hash.new(nil)
 $url ||= "#{ENV['rack.url_scheme']}://#{ENV['HTTP_HOST']}"
+$file = OrderReaderWriter.new('orders.csv')
+$orders = $file.get_orders
 
 def authenticate!
 	if !session[:church] && ENV['logged']
@@ -132,7 +180,6 @@ get "/dashboard" do
 	@weekly_bread_sales = $ld.weekly_bread_sales
 	@max_bread_sales = ENV['MAX_LOAVES_PER_WEEK']
 	@download_csv_link = $url.to_s+"/orders.csv"
-	puts @download_csv_link
 	erb :dashboard
 end
 
@@ -156,7 +203,6 @@ post "/download_csv" do
 		CSV.open("orders.csv", "w") do |csv|
 			for order_pair in $orders do
 				order = order_pair[1]
-				print order
 				string = order.to_csv
 				csv << string
 			end
@@ -167,8 +213,9 @@ end
 
 get "/display_orders" do
 	authenticate!
+	$orders = $file.get_orders
 	@str = "<table width=75% style=\"border-collapse:collapse; border:1px solid #000000;\">"
-	@str += "<tr><td style=\"border:1px solid #000000;\">Order Number</td><td style=\"border:1px solid #000000;\">Orderer</td><td style=\"border:1px solid #000000;\">Small Loaves</td><td style=\"border:1px solid #000000;\">Large Loaves</td>"
+	@str += "<tr><td style=\"border:1px solid #000000;\">Order Number</td><td style=\"border:1px solid #000000;\">Orderer</td><td style=\"border:1px solid #000000;\">Small Loaves</td><td style=\"border:1px solid #000000;\">Large Loaves</td><td>Has been picked up?</td></tr>"
 	for order_pair in $orders do
 		@str += order_pair[1].to_table_rw.to_s
 		@str += "\n"
@@ -176,4 +223,17 @@ get "/display_orders" do
 	@str += "</table>"
 	@date = Time.now
 	erb :"authentication/csv"
+end
+
+post "/process_order_pickups" do 
+	authenticate!
+	finalized = []
+
+	for order_pair in $orders do
+		finalized.push([order_pair[1], params[order_pair[0].to_s.to_sym]=="true"])
+	end
+
+
+	$file.write_orders(finalized)
+	redirect "/dashboard"
 end

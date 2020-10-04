@@ -3,9 +3,9 @@ require "sinatra"
 require "sinatra/flash"
 require 'rest-client'
 
-# pickup window instead of delivery | X
-# order numbers | Check?
-# spreadsheet of orders | Check?
+# pickup window instead of delivery | CHECK!
+# order numbers | CHECK!
+# spreadsheet of orders | CHECK!
 # pickup window cut off | X
 # lockdown (for early orders and weekly loaves 150 per week) | CHECK!
 
@@ -106,6 +106,7 @@ get "/confirm_purchase" do
 	  	$ld.add(session[:small]+session[:large])
 	  	order = Order.new(session[:fname], session[:lname], session[:small], session[:large])
 		$orders[order.order_number] = order
+		$file.add_order(order)
 		
 		emailer = EmailSender.new(session[:email], order.order_number, session[:large], session[:small], session[:fname], session[:lname])
 		emailer.mailgun_send_email
@@ -146,18 +147,20 @@ post "/process_user" do
 	end
 end
 
-get "/quick_order" do
-	order = Order.new("Bob", "Boberson", 0, 2)
-	$orders[order.order_number] = order
-	$ld.add(order.small+order.large)
+# get "/quick_order" do
+#	order = Order.new("Bob", "Boberson", 0, 2)
+#	$orders[order.order_number] = order
+#	$ld.add(order.small+order.large)
+#	$file.add_order(order)
+#
+#	redirect "/"
+# end
 
-	redirect "/"
-end
-
-get "/quick_order_large" do
-	order = Order.new("Fred", "McRichson", 100, 52)
-	$orders[order.order_number] = order
-	$ld.add(order.small+order.large)
-
-	redirect "/"
-end
+# get "/quick_order_large" do
+#	order = Order.new("Fred", "McRichson", 100, 52)
+#	$orders[order.order_number] = order
+#	$ld.add(order.small+order.large)
+#	$file.add_order(order)
+#
+#	redirect "/"
+# end
