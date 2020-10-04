@@ -147,6 +147,22 @@ post "/process_user" do
 	end
 end
 
+get "/email_template" do
+	send_file "views/resources/email_template.html"
+end
+
+get "/mock_order" do
+	session[:fname] = params[:firstname]
+	session[:lname] = params[:lastname]
+	session[:email] = params[:email]
+	session[:line1] = "3707 W. University Drive"
+	session[:city] = "Edinburg"
+	session[:zip] = "78541"
+	session[:large] = 1
+	session[:small] = 1
+	redirect "/confirm_purchase"
+end
+
 # get "/quick_order" do
 #	order = Order.new("Bob", "Boberson", 0, 2)
 #	$orders[order.order_number] = order
