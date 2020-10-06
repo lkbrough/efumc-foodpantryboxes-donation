@@ -7,7 +7,48 @@ require 'uri'
 class Lockdown
 	@@ld = false
 	@@weekly_bread_sales = 0
-	@@last_reset = Time.now
+	@@last_reset = Time.now.getlocal('-05:00')
+
+	def initialize
+		f = File.exists?("config/active_config") ? File.open("config/active_config") : nil
+		cnt = 0
+		key = ""
+		value = ""
+		if !f.nil?
+			f.each_line { |line| 
+				if cnt > 0 && cnt % 2 == 0
+					value_placement(key, value)
+				end
+				key = line.strip if cnt % 2 == 0
+				value = line.strip if cnt % 2 == 1
+				cnt = cnt + 1
+			}
+			value_placement(key, value)
+		end
+		f.close
+	end
+
+	def value_placement(key, value)
+		case key
+		when "weekly_bread_sales"
+			@@weekly_bread_sales = value.to_i
+		when "lockdown"
+			@@ld = value.to_s.downcase === "true"
+		when "reset"
+			part = value.split(' ', 3)
+			day = part[0].to_i
+			month = parts[1].to_i
+			year = parts[2].to_i
+			@@last_reset = Time.new(year, month, day, "-05:00")
+		end
+	end
+
+	def rewrite_file
+		File.open("config/active_config", 'w') { |f|
+			puts('writing!')
+			f.write("lockdown\n#{@@ld.to_s}\nweekly_bread_sales\n#{@@weekly_bread_sales.to_s}\nreset\n#{@@last_reset.day} #{@@last_reset.month} #{@@last_reset.year}\n")
+		}
+	end
 
 	def lockdown!
 		reset!
@@ -16,6 +57,7 @@ class Lockdown
 		else
 			if @@weekly_bread_sales >= ENV['MAX_LOAVES_PER_WEEK'].to_i
 				@@ld = true
+				rewrite_file
 				lockdown!
 			end
 			return nil
@@ -23,24 +65,27 @@ class Lockdown
 	end
 
 	def reset!
-		if @@last_reset.yday != Time.now.yday && Time.now.wday == 0
+		if @@last_reset.yday != Time.now.yday && Time.now.sunday?
 			@@last_reset = Time.now
 			@@ld = false
 			@@weekly_bread_sales = 0
-			lockdown!
+			rewrite_file
 		end
 	end
 
 	def add(number)
 		@@weekly_bread_sales += number
+		rewrite_file
 	end
 
 	def end_lockdown
 		@@ld = false
+		rewrite_file
 	end
 
 	def start_lockdown
 		@@ld = true
+		rewrite_file
 	end
 
 	def ld
@@ -103,7 +148,7 @@ class OrderReaderWriter
 
 	def get_orders
 		orders = Hash.new(nil)
-		file = File.open(@filename , 'r') { |f|
+		File.open(@filename , 'r') { |f|
 			f.each_line { |line|
 				line.chomp!
 				parts = line.split(',', 4)
@@ -117,7 +162,7 @@ class OrderReaderWriter
 
 	def write_orders(orders_checked)
 		# orders_checked is a two-dimensional array. Each line will have an order and a boolean. The order represents, of course, the order and the boolean represents if it was picked up or not. This will clear out the orders.csv and write it out fresh so that we have only orders that haven't been picked up
-		file = File.open(@filename, 'w') { |f|
+		File.open(@filename, 'w') { |f|
 			orders_checked.each { |line|
 				if line.length != 2
 					return
@@ -130,12 +175,13 @@ class OrderReaderWriter
 	end
 
 	def add_order(order)
-		file = File.open(@filename, 'a') { |f|
+		File.open(@filename, 'a') { |f|
 			f.write(order.to_comma_delimited+"\n")
 		}
 	end
 end
 
+File.new("config/active_config", 'a').close
 $ld = Lockdown.new
 $url ||= "#{ENV['rack.url_scheme']}://#{ENV['HTTP_HOST']}"
 File.new("orders.csv", 'a').close
@@ -220,7 +266,7 @@ get "/display_orders" do
 		@str += "\n"
 	end
 	@str += "</table>"
-	@date = Time.now
+	@date = Time.now.getlocal('-05:00')
 	erb :"authentication/csv"
 end
 

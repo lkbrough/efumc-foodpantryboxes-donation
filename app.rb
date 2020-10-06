@@ -16,7 +16,7 @@ key = ""
 value = ""
 if !f.nil?
     f.each_line do |line|
-        ENV[key.to_s] = value.to_s if cnt > 0 and cnt % 2 == 0
+        ENV[key.to_s] = value.to_s if cnt > 0 && cnt % 2 == 0
         key = line.strip if cnt % 2 == 0
         value = line.strip if cnt % 2 == 1
         cnt = cnt + 1
