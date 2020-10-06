@@ -16,7 +16,7 @@ class EmailSender
 		large_price = ENV['LARGE_PRICE'].to_i
 	    shipping_rate = ENV['HANDLING_RATE'].to_i
 		private_key = ENV['MAILGUN_API_KEY']
-		church_email = ENV['CHURCH_EMAIL']
+		email_string = ENV['EMAILS']
 		mailgun_url = ENV['MAILGUN_URL']
         mailgun_domain = ENV['MAILGUN_DOMAIN']
 
@@ -24,7 +24,7 @@ class EmailSender
 
         message_params = {
             from: "EFUMC Pumpkin Bread Orders <mailgun@#{mailgun_domain}>",
-            to: @email_user+", "+church_email.to_s.downcase,
+            to: @email_user+", "+email_string.to_s.downcase,
             subject: "Your Pumpkin Bread Order has been placed!",
             text: "Thank you #{@fname} #{@lname}, for your recent pumpkin bread order! By purchasing you are supporting our scholarship singers as well as getting a taste of a long run tradition for our church!  Your order number is ##{@order_number}. Orders place between Friday and Monday will be avaliable for pickup the following Wednesday. Orders place between Tuesday and Thursday will be avaliable for pickup the following Saturday. If you miss three pickup times after your order is placed, expect a phone call reminder regarding your order. You ordered #{@large_amount} and #{@small_amount} for a total of #{(@large_amount*large_price)+(@small_amount*small_price)+1} including a dollar processing charge.",
             html: "<!DOCTYPE html>
@@ -63,11 +63,11 @@ class EmailSender
             <body style=\"margin:0; padding:25px;\">
                 <h1>Thank you for your order!</h1>
                 <div>
-                    Thank you #{@fname.to_s.capitalize} #{@lname.to_s.capitalize}, for your recent pumpkin bread order! By purchasing you are supporting our scholarship singers as well as getting a taste of a long run tradition for our church! Your order number is <span style=\"color: #fc2323;\">##{@order_number}</span>
+                    Thank you #{@fname.to_s.capitalize} #{@lname.to_s.capitalize}, for your recent pumpkin bread order! By purchasing you are supporting our scholarship singers as well as participating in a long run tradition for our church! Your order number is <span style=\"color: #fc2323;\">##{@order_number}</span>
                 </div>
                 <div>
-                    <p>Orders place between Friday and Monday will be avaliable for pickup <span style=\"text-decoration: underline;\">the following Wednesday</span>.<br/>Orders place between Tuesday and Thursday will be avaliable for pickup <span style=\"text-decoration: underline;\">the following Saturday</span>. <br/>If you miss three pickup times after your order is placed, <span style=\"text-decoration: underline;\">expect a phone call reminder regarding your order.</span>
-                    </p>
+                    <p>Your order will be avaliable for pickup at Edinburg FUMC at 3707 West University Drive, Edinburg, TX.</p>
+                    <p>Orders placed between Friday and Monday will be avaliable for pickup <span style=\"text-decoration: underline;\">the following Wednesday</span>.<br/>Orders placed between Tuesday and Thursday will be avaliable for pickup <span style=\"text-decoration: underline;\">the following Saturday</span>. <br/>If you miss three pickup times after your order is placed, <span style=\"text-decoration: underline;\">expect a phone call reminding you about your order.</span></p>
                 </div>
                 <table width=\"75%\">
                     <tr>
