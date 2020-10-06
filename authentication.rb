@@ -10,7 +10,7 @@ class Lockdown
 	@@last_reset = Time.now.getlocal('-05:00')
 
 	def initialize
-		f = File.exists?("config/active_config") ? File.open("config/active_config") : nil
+		f = File.exists?("active_config") ? File.open("active_config") : nil
 		cnt = 0
 		key = ""
 		value = ""
@@ -44,7 +44,7 @@ class Lockdown
 	end
 
 	def rewrite_file
-		File.open("config/active_config", 'w') { |f|
+		File.open("active_config", 'w') { |f|
 			puts('writing!')
 			f.write("lockdown\n#{@@ld.to_s}\nweekly_bread_sales\n#{@@weekly_bread_sales.to_s}\nreset\n#{@@last_reset.day} #{@@last_reset.month} #{@@last_reset.year}\n")
 		}
@@ -181,7 +181,7 @@ class OrderReaderWriter
 	end
 end
 
-File.new("config/active_config", 'a').close
+File.new("active_config", 'a').close
 $ld = Lockdown.new
 $url ||= "#{ENV['rack.url_scheme']}://#{ENV['HTTP_HOST']}"
 File.new("orders.csv", 'a').close
