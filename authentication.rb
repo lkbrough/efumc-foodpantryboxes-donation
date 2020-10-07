@@ -298,6 +298,7 @@ post "/process_order_pickups" do
 end
 
 post "/email_csv" do
+	authenticate!
 	email_string = ENV['EMAILS']
 	mailgun_url = ENV['MAILGUN_URL']
 	mailgun_domain = ENV['MAILGUN_DOMAIN']
