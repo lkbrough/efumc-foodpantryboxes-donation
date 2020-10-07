@@ -318,3 +318,17 @@ post "/email_csv" do
 	flash[:success] = "Email Sent!"
 	redirect "/dash"
 end
+
+get "/add_order" do
+	authenticate!
+	erb :add_order
+end
+
+post "/add_order" do
+	authenticate!
+	$ld.add(params[:small]+params[:large])
+	order = Order.new(params[:fname], params[:lname]+"*", params[:phone], params[:small], params[:large])
+	$orders[order.order_number] = order
+	$file.add_order(order)
+	redirect "/add_order"
+end

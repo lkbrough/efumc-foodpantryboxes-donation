@@ -51,11 +51,6 @@ get "/info" do
 	if $ld.lockdown!
 		redirect "/lockdown"
 	end
-	if session[:large]+session[:small] >= 5
-		@shipping_option = "<div>Because you have ordered five or more, you have the option to ship! Please check this if you want it shipped to you. (A hold of $8 will be placed with possibility of <span style=\"text-decoration:underline;\">increase</span>) <input type=\"checkbox\" name=\"shippingIncluded\" id=\"shippingIncluded\"></div>"
-	else
-		@shipping_option = ""
-	end
 	if (session[:large] != 0 || session[:small] != 0) && (!session[:large].nil? && !session[:small].nil?)
 		@fname = session[:fname]
 		@lname = session[:lname]
