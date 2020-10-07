@@ -31,6 +31,14 @@
         </div>
 
         <div class="mb-3">
+          <label for="phone">Phone Number</label>
+          <input type="tel" class="form-control" id="phone" name="phone" placeholder="(123)456-7890" value = <%= @phone %>>
+          <div class="invalid-feedback">
+            Please enter a valid phone number.
+          </div>
+        </div>
+
+        <div class="mb-3">
           <label for="address">Address</label>
           <input type="text" class="form-control" id="address" name="line1" placeholder="1234 Main St" value = <%= @line1 %>>
           <div class="invalid-feedback">

@@ -1,13 +1,14 @@
 require 'mailgun-ruby'
 
 class EmailSender
-    def initialize(user, order_number, large_amount, small_amount, fname, lname)
+    def initialize(user, order_number, large_amount, small_amount, fname, lname, phone)
         @email_user = user
         @order_number = order_number
         @large_amount = large_amount
         @small_amount = small_amount
         @fname = fname
         @lname = lname
+        @phone = phone
     end
 
 
@@ -26,7 +27,7 @@ class EmailSender
             from: "EFUMC Pumpkin Bread Orders <mailgun@#{mailgun_domain}>",
             to: @email_user+", "+email_string.to_s.downcase,
             subject: "Your Pumpkin Bread Order has been placed!",
-            text: "Thank you #{@fname} #{@lname}, for your recent pumpkin bread order! By purchasing you are supporting our scholarship singers as well as getting a taste of a long run tradition for our church!  Your order number is ##{@order_number}. Orders place between Friday and Monday will be avaliable for pickup the following Wednesday. Orders place between Tuesday and Thursday will be avaliable for pickup the following Saturday. If you miss three pickup times after your order is placed, expect a phone call reminder regarding your order. You ordered #{@large_amount} and #{@small_amount} for a total of #{(@large_amount*large_price)+(@small_amount*small_price)+1} including a dollar processing charge.",
+            text: "Thank you #{@fname} #{@lname}, for your recent pumpkin bread order! By purchasing you are supporting our scholarship singers as well as getting a taste of a long run tradition for our church!  Your order number is ##{@order_number}. Orders place between Friday and Monday will be avaliable for pickup the following Wednesday. Orders place between Tuesday and Thursday will be avaliable for pickup the following Saturday. If you miss three pickup times after your order is placed, expect a phone call at #{@phone} regarding your order. You ordered #{@large_amount} and #{@small_amount} for a total of #{(@large_amount*large_price)+(@small_amount*small_price)+1} including a dollar processing charge.",
             html: "<!DOCTYPE html>
             <html>
             <head>
@@ -67,7 +68,7 @@ class EmailSender
                 </div>
                 <div>
                     <p>Your order will be avaliable for pickup at Edinburg FUMC at 3707 West University Drive, Edinburg, TX.</p>
-                    <p>Orders placed between Friday and Monday will be avaliable for pickup <span style=\"text-decoration: underline;\">the following Wednesday</span>.<br/>Orders placed between Tuesday and Thursday will be avaliable for pickup <span style=\"text-decoration: underline;\">the following Saturday</span>. <br/>If you miss three pickup times after your order is placed, <span style=\"text-decoration: underline;\">expect a phone call reminding you about your order.</span></p>
+                    <p>Orders placed between Friday and Monday will be avaliable for pickup <span style=\"text-decoration: underline;\">the following Wednesday</span>.<br/>Orders placed between Tuesday and Thursday will be avaliable for pickup <span style=\"text-decoration: underline;\">the following Saturday</span>. <br/>If you miss three pickup times after your order is placed, <span style=\"text-decoration: underline;\">expect a phone call at #{@phone} reminding you about your order.</span></p>
                 </div>
                 <table width=\"75%\">
                     <tr>

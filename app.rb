@@ -64,6 +64,7 @@ get "/info" do
 		@city = session[:city]
 		@zip = session[:zip]
 		@email = session[:email]
+		@phone = session[:phone]
 		if @zip.to_i == 0
 			@zip = "78"
 		end
@@ -78,7 +79,7 @@ get "/checkout" do
 	if $ld.lockdown!
 		redirect "/lockdown"
 	end
-	if (session[:large] != 0 || session[:small] != 0) && (!session[:fname].nil? && !session[:lname].nil? && !session[:line1].nil? && !session[:city].nil? && !session[:zip].nil?)
+	if (session[:large] != 0 || session[:small] != 0) && (!session[:fname].nil? && !session[:lname].nil? && !session[:line1].nil? && !session[:city].nil? && !session[:zip].nil? && !session[:email].nil? && !session[:phone].nil?)
 		@large_loaves = session[:large].to_i
 		@small_loaves = session[:small].to_i
 		@first_name = session[:fname]
@@ -103,17 +104,17 @@ get "/checkout" do
 end
 
 get "/confirm_purchase" do
-	if (session[:large] != 0 || session[:small] != 0) && (!session[:fname].nil? && !session[:lname].nil? && !session[:line1].nil? && !session[:city].nil? && !session[:zip].nil?)
+	if (session[:large] != 0 || session[:small] != 0) && (!session[:fname].nil? && !session[:lname].nil? && !session[:line1].nil? && !session[:city].nil? && !session[:zip].nil? && !session[:email].nil? && !session[:phone].nil?)
 		@small_price = ENV['SMALL_PRICE'].to_i
 		@large_price = ENV['LARGE_PRICE'].to_i
 		@shipping_rate = ENV['HANDLING_RATE'].to_i
 
 	  	$ld.add(session[:small]+session[:large])
-	  	order = Order.new(session[:fname], session[:lname], session[:small], session[:large])
+	  	order = Order.new(session[:fname], session[:lname], session[:phone], session[:small], session[:large])
 		$orders[order.order_number] = order
 		$file.add_order(order)
 		
-		emailer = EmailSender.new(session[:email], order.order_number, session[:large], session[:small], session[:fname], session[:lname])
+		emailer = EmailSender.new(session[:email], order.order_number, session[:large], session[:small], session[:fname], session[:lname], session[:phone])
 		emailer.mailgun_send_email
 
 	  	session.clear
@@ -139,7 +140,8 @@ post "/process_user" do
 	session[:city] = params[:city]
 	session[:zip] = params[:zip]
 	session[:email] = params[:email]
-	if session[:fname].nil? || session[:fname].empty? || session[:lname].nil? || session[:lname].empty? || session[:line1].nil? || session[:line1].empty? || session[:city].nil? || session[:city].empty? || session[:zip].nil? || session[:zip].empty? || session[:email].nil? || session[:email].empty?
+	session[:phone] = params[:phone]
+	if session[:fname].nil? || session[:fname].empty? || session[:lname].nil? || session[:lname].empty? || session[:phone].nil? || session[:phone].empty?|| session[:line1].nil? || session[:line1].empty? || session[:city].nil? || session[:city].empty? || session[:zip].nil? || session[:zip].empty? || session[:email].nil? || session[:email].empty?
 		flash[:error] = "Fill in all required fields!"
 		redirect "/info"
 	end
@@ -152,36 +154,37 @@ post "/process_user" do
 	end
 end
 
-# get "/email_template" do
-# 	send_file "views/resources/email_template.html"
-# end
+get "/email_template" do
+	send_file "views/resources/email_template.html"
+end
 
-# get "/mock_order" do
-# 	session[:fname] = params[:firstname]
-# 	session[:lname] = params[:lastname]
-# 	session[:email] = params[:email]
-# 	session[:line1] = "3707 W. University Drive"
-# 	session[:city] = "Edinburg"
-# 	session[:zip] = "78541"
-# 	session[:large] = 1
-# 	session[:small] = 1
-# 	redirect "/confirm_purchase"
-# end
+get "/mock_order" do
+	session[:fname] = params[:firstname]
+	session[:lname] = params[:lastname]
+	session[:email] = params[:email]
+	session[:phone] = "(956) 381-9806"
+	session[:line1] = "3707 W. University Drive"
+	session[:city] = "Edinburg"
+	session[:zip] = "78541"
+	session[:large] = 1
+	session[:small] = 1
+	redirect "/confirm_purchase"
+end
 
-# get "/quick_order" do
-#	order = Order.new("Bob", "Boberson", 0, 2)
-#	$orders[order.order_number] = order
-#	$ld.add(order.small+order.large)
-#	$file.add_order(order)
-#
-#	redirect "/"
-# end
+get "/quick_order" do
+	order = Order.new("Bob", "Boberson", "281-781-5723", 0, 2)
+	$orders[order.order_number] = order
+	$ld.add(order.small+order.large)
+	$file.add_order(order)
 
-# get "/quick_order_large" do
-#	order = Order.new("Fred", "McRichson", 100, 52)
-#	$orders[order.order_number] = order
-#	$ld.add(order.small+order.large)
-#	$file.add_order(order)
-#
-#	redirect "/"
-# end
+	redirect "/"
+end
+
+get "/quick_order_large" do
+	order = Order.new("Fred", "McRichson", "281-781-5723", 100, 52)
+	$orders[order.order_number] = order
+	$ld.add(order.small+order.large)
+	$file.add_order(order)
+
+	redirect "/"
+end

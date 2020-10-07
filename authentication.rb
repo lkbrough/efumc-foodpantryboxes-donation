@@ -35,11 +35,11 @@ class Lockdown
 		when "lockdown"
 			@@ld = value.to_s.downcase === "true"
 		when "reset"
-			part = value.split(' ', 3)
-			day = part[0].to_i
+			parts = value.split(' ', 3)
+			day = parts[0].to_i
 			month = parts[1].to_i
 			year = parts[2].to_i
-			@@last_reset = Time.new(year, month, day, "-05:00")
+			@@last_reset = Time.new(year, month, day, 0, 0, 0, "-05:00")
 		end
 	end
 
@@ -70,6 +70,7 @@ class Lockdown
 			@@ld = false
 			@@weekly_bread_sales = 0
 			rewrite_file
+			puts("reset!")
 		end
 	end
 
@@ -100,21 +101,22 @@ end
 class Order
 	@@no_orders = 0
 
-	def initialize(fname, lname, small, large, order_number = nil)
+	def initialize(fname, lname, phone, small, large, order_number = nil)
 		order_number.nil? ? @order_number = "%03d" % [Time.now.yday.to_s] + "%02d" % [Time.now.hour.to_s] + "%02d" % [Time.now.min.to_s] + "%02d" % [Time.now.sec.to_s] + fname[0].ord.to_s + lname[0].ord.to_s : @order_number = order_number
 		@orderer = "#{fname} #{lname}"
 		@small_loaves = small
 		@large_loaves = large
+		@phone_number = phone
 		@@no_orders += 1
 	end
 
 	def to_csv
-		csv = [@order_number, @orderer, @small_loaves, @large_loaves]
+		csv = [@order_number, @orderer, @phone_number, @small_loaves, @large_loaves]
 		return csv
 	end
 
 	def to_comma_delimited
-		comma = "#{@order_number},#{@orderer},#{@small_loaves},#{@large_loaves}"
+		comma = "#{@order_number},#{@orderer},#{@phone_number},#{@small_loaves},#{@large_loaves}"
 		return comma
 	end
 
@@ -122,6 +124,7 @@ class Order
 		table = "<tr>"
 		table += "<td style=\"border:1px solid #000000;\">#{@order_number}</td>"
 		table += "<td style=\"border:1px solid #000000;\">#{@orderer}</td>"
+		table += "<td style=\"border:1px solid #000000;\">#{@phone_number}</td>"
 		table += "<td style=\"border:1px solid #000000;\">#{@small_loaves}</td>"
 		table += "<td style=\"border:1px solid #000000;\">#{@large_loaves}</td>"
 		table += "<td style=\"border:1px solid #000000;\"><input type=\"checkbox\" id=\"#{@order_number}\" name=\"#{@order_number}\" value=\"true\"></td>"
@@ -151,9 +154,19 @@ class OrderReaderWriter
 		File.open(@filename , 'r') { |f|
 			f.each_line { |line|
 				line.chomp!
-				parts = line.split(',', 4)
-				name = parts[1].split(' ', 2)
-				order = Order.new(name[0], name[1], parts[2], parts[3], parts[0])
+				if line == ""
+					next
+				end
+
+				if line.count(',') == 4
+					parts = line.split(',', 5)
+					name = parts[1].split(' ', 2)
+					order = Order.new(name[0], name[1], parts[2], parts[3], parts[4], parts[0])
+				else
+					parts = line.split(',', 4)
+					name = parts[1].split(' ', 2)
+					order = Order.new(name[0], name[1], 'Check PayPal', parts[2], parts[3], parts[0])
+				end
 				orders[order.order_number] = order
 			}
 		}
@@ -260,7 +273,7 @@ get "/display_orders" do
 	authenticate!
 	$orders = $file.get_orders
 	@str = "<table width=75% style=\"border-collapse:collapse; border:1px solid #000000;\">"
-	@str += "<tr><td style=\"border:1px solid #000000;\">Order Number</td><td style=\"border:1px solid #000000;\">Orderer</td><td style=\"border:1px solid #000000;\">Small Loaves</td><td style=\"border:1px solid #000000;\">Large Loaves</td><td>Has been picked up?</td></tr>"
+	@str += "<tr><td style=\"border:1px solid #000000;\">Order Number</td><td style=\"border:1px solid #000000;\">Orderer</td><td style=\"border:1px solid #000000;\">Phone Number</td><td style=\"border:1px solid #000000;\">Small Loaves</td><td style=\"border:1px solid #000000;\">Large Loaves</td><td>Has been picked up?</td></tr>"
 	for order_pair in $orders do
 		@str += order_pair[1].to_table_rw.to_s
 		@str += "\n"
