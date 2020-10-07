@@ -326,7 +326,7 @@ end
 
 post "/add_order" do
 	authenticate!
-	$ld.add(params[:small]+params[:large])
+	$ld.add(params[:small].to_i+params[:large].to_i)
 	order = Order.new(params[:fname], params[:lname]+"*", params[:phone], params[:small], params[:large])
 	$orders[order.order_number] = order
 	$file.add_order(order)
