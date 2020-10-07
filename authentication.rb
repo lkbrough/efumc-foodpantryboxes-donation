@@ -3,6 +3,7 @@ require "sinatra"
 require "sinatra/flash"
 require "csv"
 require 'uri'
+require 'mailgun-ruby'
 
 class Lockdown
 	@@ld = false
@@ -294,4 +295,25 @@ post "/process_order_pickups" do
 
 	$file.write_orders(finalized)
 	redirect "/dashboard"
+end
+
+post "/email_csv" do
+	email_string = ENV['EMAILS']
+	mailgun_url = ENV['MAILGUN_URL']
+	mailgun_domain = ENV['MAILGUN_DOMAIN']
+	private_key = ENV['MAILGUN_API_KEY']
+
+	mg_client = Mailgun::Client.new private_key
+
+	message_params = {
+            from: "EFUMC Pumpkin Bread Orders <mailgun@#{mailgun_domain}>",
+            to: email_string.to_s.downcase,
+			subject: "Pumpkin Bread Orders",
+			html: "The pumpkin bread orders csv is attached! You might not know what a csv file it, but it is nearly the same as an excel file (just easier for the program to write).<br/>To open it, follow these steps:<ol><li>Download the attachment.</li><li>Go to the folder where you saved it</li><li>Find the file</li><li>Right click the file</li><li>Hover over Open with...</li><li>Select Excel if it appears in the list or click choose another app and find Excel</li></ol>Excel should immediately recognize the file and split it up into rows and columns. Certain rows may not have a phone number in them, that happened due to a data save failure. Sorry!",
+			attachment: File.new('orders.csv')
+	}
+	mg_client.send_message "#{mailgun_domain}", message_params
+
+	flash[:success] = "Email Sent!"
+	redirect "/dash"
 end

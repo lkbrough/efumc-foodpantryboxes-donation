@@ -68,7 +68,7 @@ class EmailSender
                 </div>
                 <div>
                     <p>Your order will be avaliable for pickup at Edinburg FUMC at 3707 West University Drive, Edinburg, TX.</p>
-                    <p>Orders placed between Friday and Monday will be avaliable for pickup <span style=\"text-decoration: underline;\">the following Wednesday</span>.<br/>Orders placed between Tuesday and Thursday will be avaliable for pickup <span style=\"text-decoration: underline;\">the following Saturday</span>. <br/>If you miss three pickup times after your order is placed, <span style=\"text-decoration: underline;\">expect a phone call at #{@phone} reminding you about your order.</span></p>
+                    <p>Orders placed between Friday and Monday will be avaliable for pickup <span style=\"text-decoration: underline;\">the following Wednesday</span>.<br/>Orders placed between Tuesday and Thursday will be avaliable for pickup <span style=\"text-decoration: underline;\">the following Saturday</span>. <br/>If you miss three pickup times after your order is placed, <span style=\"text-decoration: underline;\">expect a phone call reminding you about your order.</span><br/>The first order pickup day will be October 14th! We apologize for the delays!</p>
                 </div>
                 <table width=\"75%\">
                     <tr>
@@ -95,6 +95,8 @@ class EmailSender
                         <td>$#{(@large_amount*large_price)+(@small_amount*small_price)+1}</td>
                     </tr>
                 </table>
+                <div>
+                <p>Orderer: #{@fname.to_s.capitalize} #{@lname.to_s.capitalize}<br/>Phone Number: #{@phone}<br/>Email: #{@email}</p>
                 <footer class=\"container\">
                     <p>&copy; Edinburg First United Methodist Church 2020</p>
                     <a href=\"https://www.facebook.com/EdinburgFUMC\"><img src=\"https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/4b35fa72-cffc-4d46-8eaf-5d9cdb6a80bd/de67vqo-46ca648f-245e-4513-a890-9e9b0180caf6.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvNGIzNWZhNzItY2ZmYy00ZDQ2LThlYWYtNWQ5Y2RiNmE4MGJkXC9kZTY3dnFvLTQ2Y2E2NDhmLTI0NWUtNDUxMy1hODkwLTllOWIwMTgwY2FmNi5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.ftTDzVPf_DHrjsBm4LH9po-Cl1xSrWLxnYtOdE2hx6A\" alt=\"facebook icon\"></a>
