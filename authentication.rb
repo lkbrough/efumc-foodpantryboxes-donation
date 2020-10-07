@@ -321,7 +321,7 @@ end
 
 get "/add_order" do
 	authenticate!
-	erb :add_order
+	erb :"authentication/add_order"
 end
 
 post "/add_order" do
