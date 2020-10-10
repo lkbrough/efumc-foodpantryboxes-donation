@@ -8,6 +8,7 @@ gem 'data_mapper'
 
 group :development do
 	gem "rerun"
+	gem "sqlite3", '~> 1.3', '< 1.4'
 	gem "sqlite3-ruby"
 	gem "dm-sqlite-adapter"
 end
