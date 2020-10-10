@@ -13,7 +13,7 @@ class Order
     property :orderer, String
     property :small_loaves, Integer, :default => 0
     property :large_loaves, Integer, :default => 0
-    property :order_number, String
+    property :order_number, String, :default => "INVALID ORDER NUMBER"
     property :phone_number, String, :default => "None Provided"
 
 	def initialize(fname, lname, phone, small, large, order_number = nil)
