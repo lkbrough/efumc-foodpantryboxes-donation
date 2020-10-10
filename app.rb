@@ -147,9 +147,9 @@ post "/process_user" do
 	end
 end
 
-get "/email_template" do
-	send_file "views/resources/email_template.html"
-end
+# get "/email_template" do
+# 	send_file "views/resources/email_template.html"
+# end
 
 get "/mock_order" do
 	session[:fname] = params[:firstname]

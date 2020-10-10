@@ -8,23 +8,20 @@ else
 end
 
 class Order
-    @@no_orders = 0
     include DataMapper::Resource
     property :id, Serial
     property :orderer, String
     property :small_loaves, Integer, :default => 0
     property :large_loaves, Integer, :default => 0
-    property :order_number, Integer
+    property :order_number, String
     property :phone_number, String, :default => "None Provided"
-    property :email, String, :default => "None Provided"
 
 	def initialize(fname, lname, phone, small, large, order_number = nil)
-		order_number.nil? ? self.order_number = "%03d" % [Time.now.yday.to_s] + "%02d" % [Time.now.hour.to_s] + "%02d" % [Time.now.min.to_s] + "%02d" % [Time.now.sec.to_s] + fname[0].ord.to_s + lname[0].ord.to_s : self.order_number = order_number
+		order_number.nil? ? self.order_number = "%03d" % [Time.now.yday.to_s] + "%02d" % [Time.now.hour.to_s] + "%02d" % [Time.now.min.to_s] + "%02d" % [Time.now.sec.to_s] + fname[0].ord.to_s + lname[0].ord.to_s : self.order_number = order_number.to_s
 		self.orderer = "#{fname} #{lname}"
 		self.small_loaves = small
 		self.large_loaves = large
 		self.phone_number = phone
-        @@no_orders += 1
         self.save
     end
 
