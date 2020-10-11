@@ -35,6 +35,9 @@ get "/lockdown" do
 end
 
 get "/dash" do
+	if session[:church] && ENV['logged']
+		redirect "/dashboard"
+	end
 	erb :"authentication/login"
 end
 
@@ -128,7 +131,7 @@ post "/email_csv" do
 	mg_client.send_message "#{mailgun_domain}", message_params
 
 	flash[:success] = "Email Sent!"
-	redirect "/dash"
+	redirect "/dashboard"
 end
 
 get "/add_order" do
