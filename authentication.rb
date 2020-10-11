@@ -35,7 +35,7 @@ get "/lockdown" do
 end
 
 get "/dash" do
-	if session[:church] && ENV['logged']
+	if session[:church]
 		redirect "/dashboard"
 	end
 	erb :"authentication/login"

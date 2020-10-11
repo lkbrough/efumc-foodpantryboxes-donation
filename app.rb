@@ -151,29 +151,29 @@ end
 # 	send_file "views/resources/email_template.html"
 # end
 
-get "/mock_order" do
-	session[:fname] = params[:firstname]
-	session[:lname] = params[:lastname]
-	session[:email] = params[:email]
-	session[:phone] = "(956) 381-9806"
-	session[:line1] = "3707 W. University Drive"
-	session[:city] = "Edinburg"
-	session[:zip] = "78541"
-	session[:large] = 1
-	session[:small] = 1
-	redirect "/confirm_purchase"
-end
+# get "/mock_order" do
+# 	session[:fname] = params[:firstname]
+# 	session[:lname] = params[:lastname]
+# 	session[:email] = params[:email]
+# 	session[:phone] = "(956) 381-9806"
+# 	session[:line1] = "3707 W. University Drive"
+# 	session[:city] = "Edinburg"
+# 	session[:zip] = "78541"
+# 	session[:large] = 1
+# 	session[:small] = 1
+# 	redirect "/confirm_purchase"
+# end
 
-get "/quick_order" do
-	order = Order.new("Bob", "Boberson", "281-781-5723", 0, 2)
-	$ld.add(order.small_loaves+order.large_loaves)
+# get "/quick_order" do
+# 	order = Order.new("Bob", "Boberson", "281-781-5723", 0, 2)
+# 	$ld.add(order.small_loaves+order.large_loaves)
 
-	redirect "/"
-end
+# 	redirect "/"
+# end
 
-get "/quick_order_large" do
-	order = Order.new("Fred", "McRichson", "281-781-5723", 100, 52)
-	$ld.add(order.small_loaves+order.large_loaves)
+# get "/quick_order_large" do
+# 	order = Order.new("Fred", "McRichson", "281-781-5723", 100, 52)
+# 	$ld.add(order.small_loaves+order.large_loaves)
 
-	redirect "/"
-end
+# 	redirect "/"
+# end
