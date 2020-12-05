@@ -1,7 +1,8 @@
 <div class="container">
+	<p>The cost of a box is $50. You can donate a part or a whole.<p>
+	<p>For every box, you will be able to name it in honor, celebration, or memory of someone or something. For example, if you donate $25, you will be able to leave a note about 1 box. If you donate $55, you will be able to leave a note about 2 boxes. </p> 
 	<form action="/process_items" method="POST">
-		<label>Large Pumpkin Loaves: (Price: $<%=sprintf('%.2f',  @large_price) %>)</label> <input type="text" name="large"><br/>
-		<label>Small Pumpkin Loaves: (Price: $<%=sprintf('%.2f',  @small_price) %>)</label> <input type="text" name="small"><br/>
+		<label>Donation Amount:</label> <input type="text" name="donation"><br/>
 		<input type="submit" name="", value="Proceed to Personal Info">
 	</form>
 </div>

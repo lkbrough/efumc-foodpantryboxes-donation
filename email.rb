@@ -1,21 +1,17 @@
 require 'mailgun-ruby'
 
 class EmailSender
-    def initialize(user, order_number, large_amount, small_amount, fname, lname, phone)
+    def initialize(user, extra_emails, fname, lname, phone, donation)
         @email_user = user
-        @order_number = order_number
-        @large_amount = large_amount
-        @small_amount = small_amount
+        @extra_emails = extra_emails
         @fname = fname
         @lname = lname
         @phone = phone
+        @donation = donation
     end
 
 
     def mailgun_send_email
-		small_price = ENV['SMALL_PRICE'].to_i
-		large_price = ENV['LARGE_PRICE'].to_i
-	    shipping_rate = ENV['HANDLING_RATE'].to_i
 		private_key = ENV['MAILGUN_API_KEY']
 		email_string = ENV['EMAILS']
 		mailgun_url = ENV['MAILGUN_URL']
@@ -24,17 +20,16 @@ class EmailSender
         mg_client = Mailgun::Client.new private_key
 
         message_params = {
-            from: "EFUMC Pumpkin Bread Orders <mailgun@#{mailgun_domain}>",
-            to: @email_user+", "+email_string.to_s.downcase,
-            subject: "Your Pumpkin Bread Order has been placed!",
-            text: "Thank you #{@fname} #{@lname}, for your recent pumpkin bread order! By purchasing you are supporting our scholarship singers as well as getting a taste of a long run tradition for our church!  Your order number is ##{@order_number}. Orders place between Friday and Monday will be avaliable for pickup the following Wednesday. Orders place between Tuesday and Thursday will be avaliable for pickup the following Saturday. If you miss three pickup times after your order is placed, expect a phone call at #{@phone} regarding your order. You ordered #{@large_amount} and #{@small_amount} for a total of #{(@large_amount*large_price)+(@small_amount*small_price)+1} including a dollar processing charge.",
+            from: "EFUMC Advent Boxes Donation <mailgun@#{mailgun_domain}>",
+            to: @email_user+", "+@extra_emails+email_string.to_s.downcase,
+            subject: "Thank you for your donation!",
+            text: "Thank you #{@fname} #{@lname}, for your donation of #{@boxes} Advent Boxes with a total of $#{@total} donated!",
             html: "<!DOCTYPE html>
             <html>
             <head>
                 <title>
-                    Pumpkin Bread Order Email
+                    Advent Boxes Donation Email
                 </title>
-                <link href=\"https://fonts.googleapis.com/css2?family=Epilogue:wght@300;400&family=Pacifico&display=swap\" rel=\"stylesheet\">
                 <style type=\"text/css\" media=\"screen\">
                     table{
                     border-collapse:collapse;
@@ -45,10 +40,9 @@ class EmailSender
                     border:1px solid #000000;
                     }
             
-                    @import url(\'https://fonts.googleapis.com/css2?family=Epilogue:wght@300;400;700&family=Pacifico&display=swap\');
+                    @import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@300;400;700&family=Pacifico&display=swap');
             
                     body {
-                        background-color: #4d4b3d;
                         color: #000000;
                         font-family: 'Epilogue';
                         font-size: 16px;
@@ -57,46 +51,18 @@ class EmailSender
                     h1 {
                         font-family: 'Pacifico';
                         font-size: 24px;
-                        color: #f7a406;
+                        color: #0A1E33;
                     }
                 </style>
             </head>
             <body style=\"margin:0; padding:25px;\">
-                <h1>Thank you for your order!</h1>
+                <h1> Thank you for your donation!</h1>
                 <div>
-                    Thank you #{@fname.to_s.capitalize} #{@lname.to_s.capitalize}, for your recent pumpkin bread order! By purchasing you are supporting our scholarship singers as well as participating in a long run tradition for our church! Your order number is <span style=\"color: #fc2323;\">##{@order_number}</span>
+                    <p>Thank you #{@fname.to_s.capitalize} #{@lname.to_s.capitalize} for your donation of #{@donation}! Your donation helps us provide #{(@donation/50).floor} complete boxes of food for our food pantry guests. Each of these boxes feeds a family of 4 for the holidays include fresh produce, meat, and canned goods.</p>
+                    <p>Every month, including special givings around Holidays such as Easter and Christmas, we give out food to our local community through the Edinburg FUMC food pantry. We hope you'll consider donating canned goods, your time by volunteering at our monthly pick up, or by future donations to our food pantry. Every little bit is greatly appreciated and all funds go to providing food to the community.</p>
+                    <p>Thank you so much for your continued support! any emails you provided as part of this memo have received this email as well! If you didn't purchase but are receiving this email, then a box was donated for you in some capticity!</p>
                 </div>
-                <div>
-                    <p>Your order will be avaliable for pickup at Edinburg FUMC at 3707 West University Drive, Edinburg, TX.</p>
-                    <p>Orders placed between Friday and Monday will be avaliable for pickup <span style=\"text-decoration: underline;\">the following Wednesday</span>.<br/>Orders placed between Tuesday and Thursday will be avaliable for pickup <span style=\"text-decoration: underline;\">the following Saturday</span>. <br/>If you miss three pickup times after your order is placed, <span style=\"text-decoration: underline;\">expect a phone call reminding you about your order.</span><br/>The first order pickup day will be October 14th! We apologize for the delays!</p>
-                </div>
-                <table width=\"75%\">
-                    <tr>
-                        <td>Pumpkin Bread</td>
-                        <td>Amount</td>
-                        <td>Cost</td>
-                    </tr>
-            
-                    <tr>
-                        <td>Large ($#{large_price})</td>
-                        <td>#{@large_amount}</td>
-                        <td>$#{@large_amount*large_price}</td>
-                    </tr>
-            
-                    <tr>
-                        <td>Small ($#{small_price})</td>
-                        <td>#{@small_amount}</td>
-                        <td>$#{@small_amount*small_price}</td>
-                    </tr>
-            
-                    <tr>
-                        <td/>
-                        <td>Total (With $1 processing fee)</td>
-                        <td>$#{(@large_amount*large_price)+(@small_amount*small_price)+1}</td>
-                    </tr>
-                </table>
-                <div>
-                <p>Orderer: #{@fname.to_s.capitalize} #{@lname.to_s.capitalize}<br/>Phone Number: #{@phone}<br/>Email: #{@email}</p>
+                <p>Donator: #{@fname.to_s.capitalize} #{@lname.to_s.capitalize}<br/>Phone Number: #{@phone}<br/>Email: #{@email}</p>
                 <footer class=\"container\">
                     <p>&copy; Edinburg First United Methodist Church 2020</p>
                     <a href=\"https://www.facebook.com/EdinburgFUMC\"><img src=\"https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/4b35fa72-cffc-4d46-8eaf-5d9cdb6a80bd/de67vqo-46ca648f-245e-4513-a890-9e9b0180caf6.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvNGIzNWZhNzItY2ZmYy00ZDQ2LThlYWYtNWQ5Y2RiNmE4MGJkXC9kZTY3dnFvLTQ2Y2E2NDhmLTI0NWUtNDUxMy1hODkwLTllOWIwMTgwY2FmNi5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.ftTDzVPf_DHrjsBm4LH9po-Cl1xSrWLxnYtOdE2hx6A\" alt=\"facebook icon\"></a>

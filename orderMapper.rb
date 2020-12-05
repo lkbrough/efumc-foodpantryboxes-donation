@@ -1,5 +1,5 @@
 require 'data_mapper'
-require_relative "lockdown.rb"
+require_relative "boxes.rb"
 
 if ENV['DATABASE_URL']
     DataMapper::setup(:default, ENV['DATABASE_URL'] || 'postgres://localhost/mydb')
@@ -10,39 +10,53 @@ end
 class Order
     include DataMapper::Resource
     property :id, Serial
-    property :orderer, String
-    property :small_loaves, Integer, :default => 0
-    property :large_loaves, Integer, :default => 0
-    property :order_number, String, :default => "INVALID ORDER NUMBER"
+    property :donator, String
+    property :boxes, String, :default => ""
+    property :total_donation, Float, :default => 0.0
     property :phone_number, String, :default => "None Provided"
+    property :email, String, :default => "None Provided"
+    property :purchase_id, String, :default => "ERROR"
+    property :address, String, :default => "None Provided"
 
-	def initialize(fname, lname, phone, small, large, order_number = nil)
-		order_number.nil? ? self.order_number = "%03d" % [Time.now.yday.to_s] + "%02d" % [Time.now.hour.to_s] + "%02d" % [Time.now.min.to_s] + "%02d" % [Time.now.sec.to_s] + fname[0].ord.to_s + lname[0].ord.to_s : self.order_number = order_number.to_s
-		self.orderer = "#{fname} #{lname}"
-		self.small_loaves = small
-		self.large_loaves = large
-		self.phone_number = phone
+	def initialize(fname, lname, phone, email, total_donation, address_line_1, address_line_2, city, state, zip, purchase_id = nil)
+		self.donator = "#{fname.capitalize} #{lname.capitalize}"
+        self.total_donation = total_donation
+        self.phone_number = phone
+        self.email = email
+        self.address = "%s %s, %s, %s %s" % [address_line_1, address_line_2, city, state, zip]
+        current_time = Time.now.getlocal('-05:00')
+        purchase_id.nil? ? self.purchase_id = "%02d%03d%02d%02d%02d%02d%02d" % [current_time.year, current_time.yday, current_time.hour, current_time.min, current_time.sec, lname[0].ord, fname[0].ord] : self.purchase_id = purchase_id
+        self.boxes = ""
+        self.save
+    end
+
+    def purchaseId
+        return self.purchase_id
+    end
+
+    def addBoxId(boxId)
+        self.boxes = self.boxes + boxId + ", "
         self.save
     end
 
 	def to_csv
-		csv = [self.order_number, self.orderer, self.phone_number, self.small_loaves, self.large_loaves]
+		csv = [self.donator, self.phone_number, self.email, self.address, self.total_donation, self.boxes]
 		return csv
 	end
 
 	def to_comma_delimited
-		comma = "#{self.order_number},#{self.orderer},#{self.phone_number},#{self.small_loaves},#{self.large_loaves}"
+		comma = "#{self.donator},#{self.phone_number},#{self.email},#{self.address},#{self.total_donation},#{self.boxes}"
 		return comma
 	end
 
 	def to_table_rw
 		table = "<tr>"
-		table += "<td style=\"border:1px solid #000000;\">#{self.order_number}</td>"
-		table += "<td style=\"border:1px solid #000000;\">#{self.orderer}</td>"
+		table += "<td style=\"border:1px solid #000000;\">#{self.donator}</td>"
 		table += "<td style=\"border:1px solid #000000;\">#{self.phone_number}</td>"
-		table += "<td style=\"border:1px solid #000000;\">#{self.small_loaves}</td>"
-		table += "<td style=\"border:1px solid #000000;\">#{self.large_loaves}</td>"
-		table += "<td style=\"border:1px solid #000000;\"><input type=\"checkbox\" id=\"#{self.order_number}\" name=\"#{self.order_number}\" value=\"true\"></td>"
+		table += "<td style=\"border:1px solid #000000;\">#{self.email}</td>"
+		table += "<td style=\"border:1px solid #000000;\">#{self.address}</td>"
+        table += "<td style=\"border:1px solid #000000;\">#{self.total_donation}</td>"
+        table += "<td style=\"border:1px solid #000000;\">#{self.boxes}</td>"
 		table += "</tr>"
 	end
 end
@@ -50,32 +64,16 @@ end
 DataMapper.finalize
 
 Order.auto_upgrade!
-Lockdown.auto_upgrade!
+Box.auto_upgrade!
 
 class OrderHandler
     def self.write_orders(filename)
         orders = Order.all
         File.open(filename.to_s, 'w') { |f|
-            f.write("Order Number,Orderer,Phone Number,Small Loaves Ordered,Large Loaves Ordered\n")
+            f.write("Donator,Phone Number,Email,Address,Total Donation,Box IDs\n")
             orders.each { |line|
                 f.write(line.to_comma_delimited+"\n")
             }
-        }
-    end
-
-    def self.delete_orders(orders_checked)
-        if (orders_checked.length != Order.all.length())
-            return
-        end
-
-        orders_checked.each { |order| 
-            if order.length != 2
-                return
-            end
-
-            if order[1]
-                Order.first(order_number: order[0].order_number).destroy!
-            end
         }
     end
 end

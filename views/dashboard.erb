@@ -1,20 +1,9 @@
 <div class="container">
-	<p>Is application in lockdown? (Either for earlier orders or hit max bread orders) <%= @lockdown %> </p>
-	<p>Current Weeks Bread Orders: <%= @weekly_bread_sales %> / <%= @max_bread_sales %></p>
-	<form method="POST" action="/end_lockdown">
-		<input type="submit" name="", value="End Lockdown">
-	</form>
-	<form method="POST" action="/start_lockdown">
-		<input type="submit" name="", value="Start Lockdown">
-	</form>
-
-	<form method="POST" action="/download_csv">
-		<input type="submit" name="", value="Generate Orders CSV">
-	</form>
-
 	<form method="POST" action="/email_csv">
 		<input class="btn btn-primary" type="submit" name="", value="Email Orders CSV">
 	</form>
 
-	<a class="btn btn-primary" href="/display_orders" role="button">Display Orders</a> 
+	<a class="btn btn-primary" href="/display_orders" role="button">Display Orders</a>
+	<br/>
+	<a class="btn btn-primary" href="/display_boxes" role="button">Display Boxes</a>
 </div>

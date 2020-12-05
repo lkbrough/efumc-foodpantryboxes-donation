@@ -1,11 +1,21 @@
 <div class="container">
 	<div id="totals">
 		<label>Totals</label>
-		<h2>Large Loaves:</h2><%= @large_loaves %> loaves * $<%= sprintf('%.2f', @large_price) %> = $<%= sprintf('%.2f', (@large_loaves*@large_price)) %>
-		<h2>Small Loaves:</h2><%= @small_loaves %> loaves * $<%=sprintf('%.2f',  @small_price) %> = $<%= sprintf('%.2f', (@small_loaves*@small_price)) %>
-		<h2>Handling:</h2>$<%= sprintf('%.2f', @shipping_rate) %> (Set rate to offset the costs of developing this software and other fees associated with it. We apologize for the inconvience!)
-		<h1>Total</h1>$<%= sprintf('%.2f', ((@large_loaves*@large_price)+(@small_loaves*@small_price)+(@shipping_rate))) %>
-
+		<h2>Total Donation:</h2>$<%= sprintf('%.2f', (@donation)) %>
+		<h2>Full Boxes Purchased:</h2><%= @boxes.length %> boxes
+		<h2>Memos:</h2>
+		<% for box in @boxes %>
+			<% if box[0] == "1" %>
+				In honor of 
+			<% elsif box[0] == "2" %>
+				In memory of
+			<% elsif box[0] == "3" %>
+				In Celebration of
+			<% end %>
+			<%= box[1] %>
+			<br/>
+		<% end %>
+		<br/>
 	</div>
   	<script
     src=<%= @paypal_client_url%>>
