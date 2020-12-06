@@ -67,7 +67,6 @@ get "/info" do
 end
 
 get "/checkout" do
-	puts(session.keys)
 	if (session[:donation] > 0) && (!session[:fname].nil? && !session[:lname].nil? && !session[:line1].nil? && !session[:city].nil? && !session[:zip].nil? && !session[:email].nil? && !session[:phone].nil?)
 		@donation = session[:donation].to_i
 		@small_loaves = session[:small].to_i
@@ -119,7 +118,6 @@ end
 post "/process_boxes" do
 	session[:boxes] = []
 	session[:other_emails] = ""
-	puts(params)
 	for i in 0..(session[:donation]/50).floor
 		session[:boxes].push([params["type#{i}".to_sym], params["memo#{i}".to_sym]])
 		session[:other_emails] = session[:other_emails] + params["email#{i}".to_sym].to_s.chomp + ","
