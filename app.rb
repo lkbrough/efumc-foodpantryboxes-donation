@@ -98,7 +98,12 @@ get "/confirm_purchase" do
 			order.addBoxId(box.boxId)
 		end
 
-		emailer = EmailSender.new(session[:email], session[:other_emails], session[:fname], session[:lname], session[:phone], session[:donation])
+		emails = ""
+		for email in session[:other_emails]
+			emails = emails + ",#{email}"
+		end
+
+		emailer = EmailSender.new(session[:email], emails, session[:fname], session[:lname], session[:phone], session[:donation])
 		emailer.mailgun_send_email
 
 	  	session.clear
@@ -117,10 +122,12 @@ end
 
 post "/process_boxes" do
 	session[:boxes] = []
-	session[:other_emails] = ""
+	session[:other_emails] = []
 	for i in 0..(session[:donation]/50).floor
 		session[:boxes].push([params["type#{i}".to_sym], params["memo#{i}".to_sym]])
-		session[:other_emails] = session[:other_emails] + params["email#{i}".to_sym].to_s.chomp + ","
+		if(params["email#{i}".to_sym] != "")
+			session[:other_emails].push(params["email#{i}".to_sym])
+		end
 	end
 	redirect "/checkout"
 end

@@ -17,11 +17,13 @@ class EmailSender
 		mailgun_url = ENV['MAILGUN_URL']
         mailgun_domain = ENV['MAILGUN_DOMAIN']
 
+        puts("#{@email_user}, #{@extra_emails} #{email_string}")
+
         mg_client = Mailgun::Client.new private_key
 
         message_params = {
             from: "EFUMC Advent Boxes Donation <mailgun@#{mailgun_domain}>",
-            to: @email_user+", "+@extra_emails+email_string.to_s.downcase,
+            to: @email_user+", "+@extra_emails+", "+email_string.to_s.downcase,
             subject: "Thank you for your donation!",
             text: "Thank you #{@fname} #{@lname}, for your donation of #{@boxes} Advent Boxes with a total of $#{@total} donated!",
             html: "<!DOCTYPE html>
