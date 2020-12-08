@@ -1,28 +1,28 @@
 <div class="container">
 <form action= "/process_boxes" method="POST">
 <% for i in 0..@boxes %>
-    <h1>Box <%= i %>:</h1>
+    <h1>Box <%= i+1 %>:</h1>
     <h2>Type</h2>
-        <input type="radio" id="none" name="type<%= i %>" value="0">
-        <label for="none">None</label>
+        <input type="radio" id="none<%= i %>" name="type<%= i %>" value="0">
+        <label for="none<%= i %>">None</label>
         </br>
 
-        <input type="radio" id="honor" name="type<%= i %>" value="1">
-        <label for="honor">In Honor of...</label>
+        <input type="radio" id="honor<%= i %>" name="type<%= i %>" value="1">
+        <label for="honor<%= i %>">In Honor of...</label>
         </br>
 
-        <input type="radio" id="memory" name="type<%= i %>" value="2">
-        <label for="memory">In Memory of...</label>
+        <input type="radio" id="memory<%= i %>" name="type<%= i %>" value="2">
+        <label for="memory<%= i %>">In Memory of...</label>
         </br>
 
-        <input type="radio" id="celebration" name="type<%= i %>" value="3">
-        <label for="celebration">In Celebration of...</label>
+        <input type="radio" id="celebration<%= i %>" name="type<%= i %>" value="3">
+        <label for="celebration<%= i %>">In Celebration of...</label>
         </br>
 
     </br>
 
-    <label for="memo">Memo for box:</label>
-    <input type="text" id="memo" name="memo<%= i %>">
+    <label for="memo<%= i %>">Memo for box:</label>
+    <input type="text" id="memo<%= i %>" name="memo<%= i %>">
     </br>
 
     <div class="mb-3">
