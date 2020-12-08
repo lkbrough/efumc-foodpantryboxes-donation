@@ -21,6 +21,11 @@ class EmailSender
 
         mg_client = Mailgun::Client.new private_key
 
+        partial_boxes = " "
+        if((@donation/50.0) % 1 != 0) 
+            partial_boxes = " and #{((@donation/50.0) % 1.0).to_r} of a box "
+        end
+
         message_params = {
             from: "EFUMC Advent Boxes Donation <mailgun@#{mailgun_domain}>",
             to: @email_user+", "+@extra_emails+", "+email_string.to_s.downcase,
@@ -60,11 +65,11 @@ class EmailSender
             <body style=\"margin:0; padding:25px;\">
                 <h1> Thank you for your donation!</h1>
                 <div>
-                    <p>Thank you #{@fname.to_s.capitalize} #{@lname.to_s.capitalize} for your donation of #{@donation}! Your donation helps us provide #{(@donation/50).floor} complete boxes of food for our food pantry guests. Each of these boxes feeds a family of 4 for the holidays include fresh produce, meat, and canned goods.</p>
-                    <p>Every month, including special givings around Holidays such as Easter and Christmas, we give out food to our local community through the Edinburg FUMC food pantry. We hope you'll consider donating canned goods, your time by volunteering at our monthly pick up, or by future donations to our food pantry. Every little bit is greatly appreciated and all funds go to providing food to the community.</p>
-                    <p>Thank you so much for your continued support! any emails you provided as part of this memo have received this email as well! If you didn't purchase but are receiving this email, then a box was donated for you in some capticity!</p>
+                    <p>Thank you #{@fname.to_s.capitalize} #{@lname.to_s.capitalize} for your donation of $#{@donation}! Your donation helps us provide #{(@donation/50).floor} complete boxes#{partial_boxes}of food for our food pantry guests. Each of these boxes feeds a family of 4 for the holidays includes fresh produce, meat, and canned goods.</p>
+                    <p>Every month, including a special giving around the holidays such as Easter and Christmas, we give out food to our local community through the Edinburg FUMC food pantry. We hope you'll consider donating canned goods, your time by volunteering at our monthly pick up, or by future donations to our food pantry. Every little bit is greatly appreciated and all funds go to providing food to the community.</p>
+                    <p>Thank you so much for your continued support! Any emails you provided as part of this memo have received this email as well! If you didn't purchase but are receiving this email, then a box was donated for you in some capticity!</p>
                 </div>
-                <p>Donator: #{@fname.to_s.capitalize} #{@lname.to_s.capitalize}<br/>Phone Number: #{@phone}<br/>Email: #{@email}</p>
+                <p>Donator: #{@fname.to_s.capitalize} #{@lname.to_s.capitalize}<br/>Phone Number: #{@phone}<br/>Email: #{@email_user}</p>
                 <footer class=\"container\">
                     <p>&copy; Edinburg First United Methodist Church 2020</p>
                     <a href=\"https://www.facebook.com/EdinburgFUMC\"><img src=\"https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/4b35fa72-cffc-4d46-8eaf-5d9cdb6a80bd/de67vqo-46ca648f-245e-4513-a890-9e9b0180caf6.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvNGIzNWZhNzItY2ZmYy00ZDQ2LThlYWYtNWQ5Y2RiNmE4MGJkXC9kZTY3dnFvLTQ2Y2E2NDhmLTI0NWUtNDUxMy1hODkwLTllOWIwMTgwY2FmNi5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.ftTDzVPf_DHrjsBm4LH9po-Cl1xSrWLxnYtOdE2hx6A\" alt=\"facebook icon\"></a>
