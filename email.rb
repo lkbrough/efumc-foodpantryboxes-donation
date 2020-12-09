@@ -66,7 +66,7 @@ class EmailSender
                 <h1> Thank you for your donation!</h1>
                 <div>
                     <p>Thank you #{@fname.to_s.capitalize} #{@lname.to_s.capitalize} for your donation of $#{@donation}! Your donation helps us provide #{(@donation/50).floor} complete boxes#{partial_boxes}of food for our food pantry guests. Each of these boxes feeds a family of 4 for the holidays includes fresh produce, meat, and canned goods.</p>
-                    <p>Every month, including a special giving around the holidays such as Easter and Christmas, we give out food to our local community through the Edinburg FUMC food pantry. We hope you'll consider donating canned goods, your time by volunteering at our monthly pick up, or by future donations to our food pantry. Every little bit is greatly appreciated and all funds go to providing food to the community.</p>
+                    <p>Every month, including a special distribution around the holidays such as Easter and Christmas, we give out food to our local community through the Edinburg FUMC food pantry. We hope you'll consider donating canned goods, your time by volunteering at our monthly pick up, or by future donations to our food pantry. Every little bit is greatly appreciated and all funds go to providing food to the community.</p>
                     <p>Thank you so much for your continued support! Any emails you provided as part of this memo have received this email as well! If you didn't purchase but are receiving this email, then a box was donated for you in some capticity!</p>
                 </div>
                 <p>Donator: #{@fname.to_s.capitalize} #{@lname.to_s.capitalize}<br/>Phone Number: #{@phone}<br/>Email: #{@email_user}</p>
