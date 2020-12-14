@@ -64,7 +64,7 @@ get "/display_boxes" do
 	authenticate!
 	boxes = Box.all
 	@str = "<table width=75% style=\"border-collapse:collapse; border:1px solid #000000;\">"
-	@str += "<tr><td style=\"border:1px solid #000000;\">Box ID</td><td style=\"border:1px solid #000000;\">Type</td><td style=\"border:1px solid #000000;\">Memo</td><td style=\"border:1px solid #000000;\">Purchase ID</td></tr>"
+	@str += "<tr><td style=\"border:1px solid #000000;\">Box ID</td><td style=\"border:1px solid #000000;\">Type</td><td style=\"border:1px solid #000000;\">Type (In words)</td><td style=\"border:1px solid #000000;\">Memo</td><td style=\"border:1px solid #000000;\">Purchase ID</td></tr>"
 	for box in boxes do
 		@str += box.to_table_rw.to_s
 		@str += "\n"
