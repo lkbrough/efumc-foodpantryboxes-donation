@@ -7,6 +7,7 @@ class Box
     property :purchase_id, String, :default => "ERROR"
     property :type, Integer, :default => 0
     property :memo, String, :default => "None"
+    property :type_string, String, :default => "None"
 
     def initialize(type, sequence, fname, lname, purchase_id, memo)
         self.type = type.to_i
