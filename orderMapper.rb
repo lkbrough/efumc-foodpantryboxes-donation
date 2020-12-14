@@ -71,7 +71,7 @@ class OrderHandler
     def self.write_orders(filename)
         orders = Order.all
         File.open(filename.to_s, 'w') { |f|
-            f.write("Donator,Phone Number,Email,Address,Total Donation,Box IDs\n")
+            f.write("Purchase ID,Donator,Phone Number,Email,Address,Total Donation,Box IDs\n")
             orders.each { |line|
                 f.write(line.to_comma_delimited+"\n")
             }
