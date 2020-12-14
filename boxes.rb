@@ -34,20 +34,66 @@ class Box
     end
 
     def to_csv
-		csv = [self.box_id, self.type, self.memo, self.purchase_id]
+        if defined?(self.type_string).nil?
+            type_string = ""
+            case self.type
+            when 1
+                type_string = "In Honor of"
+            when 2
+                type_string = "In Memory of"
+            when 3
+                type_string = "In Celebration of"
+            else
+                type_string = "None"
+            end
+            csv = [self.box_id, self.type, type_string, self.memo, self.purchase_id]
+            return csv
+        end
+		csv = [self.box_id, self.type, self.type_string, self.memo, self.purchase_id]
 		return csv
 	end
 
-	def to_comma_delimited
+    def to_comma_delimited
+        if defined?(self.type_string).nil?
+            type_string = ""
+            case self.type
+            when 1
+                type_string = "In Honor of"
+            when 2
+                type_string = "In Memory of"
+            when 3
+                type_string = "In Celebration of"
+            else
+                type_string = "None"
+            end
+            comma = "#{self.box_id},#{self.type},#{type_string},#{self.memo},#{self.purchase_id}"
+            return comma
+        end
 		comma = "#{self.box_id},#{self.type},#{self.type_string},#{self.memo},#{self.purchase_id}"
 		return comma
 	end
 
-	def to_table_rw
+    def to_table_rw
+        if defined?(self.type_string).nil?
+            type_string = ""
+            case self.type
+            when 1
+                type_string = "In Honor of"
+            when 2
+                type_string = "In Memory of"
+            when 3
+                type_string = "In Celebration of"
+            else
+                type_string = "None"
+            end
+        else
+            type_string = self.type_string
+        end
+
 		table = "<tr>"
 		table += "<td style=\"border:1px solid #000000;\">#{self.box_id}</td>"
         table += "<td style=\"border:1px solid #000000;\">#{self.type}</td>"
-        table += "<td style=\"border:1px solid #000000;\">#{self.type_string}</td>"
+        table += "<td style=\"border:1px solid #000000;\">#{type_string}</td>"
 		table += "<td style=\"border:1px solid #000000;\">#{self.memo}</td>"
         table += "<td style=\"border:1px solid #000000;\">#{self.purchase_id}</td>"
 		table += "</tr>"
