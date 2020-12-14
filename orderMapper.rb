@@ -40,17 +40,18 @@ class Order
     end
 
 	def to_csv
-		csv = [self.donator, self.phone_number, self.email, self.address, self.total_donation, self.boxes]
+		csv = [self.purchase_id, self.donator, self.phone_number, self.email, self.address, self.total_donation, self.boxes]
 		return csv
 	end
 
 	def to_comma_delimited
-		comma = "#{self.donator},#{self.phone_number},#{self.email},#{self.address},#{self.total_donation},#{self.boxes}"
+		comma = "#{self.purchase_id},#{self.donator},#{self.phone_number},#{self.email},#{self.address},#{self.total_donation},#{self.boxes}"
 		return comma
 	end
 
 	def to_table_rw
-		table = "<tr>"
+        table = "<tr>"
+        table += "<td style=\"border:1px solid #000000;\">#{self.purchase_id}</td>"
 		table += "<td style=\"border:1px solid #000000;\">#{self.donator}</td>"
 		table += "<td style=\"border:1px solid #000000;\">#{self.phone_number}</td>"
 		table += "<td style=\"border:1px solid #000000;\">#{self.email}</td>"

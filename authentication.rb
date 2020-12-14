@@ -50,7 +50,7 @@ get "/display_orders" do
 	authenticate!
 	orders = Order.all
 	@str = "<table width=85% style=\"border-collapse:collapse; border:1px solid #000000;\">"
-	@str += "<tr><td style=\"border:1px solid #000000;\">Donator</td><td style=\"border:1px solid #000000;\">Phone Number</td><td style=\"border:1px solid #000000;\">Email</td><td style=\"border:1px solid #000000;\">Address</td><td style=\"border:1px solid #000000;\">Total Donation</td><td>Boxes Donated</td></tr>"
+	@str += "<tr><td style=\"border:1px solid #000000;\">Purchase ID</td><td style=\"border:1px solid #000000;\">Donator</td><td style=\"border:1px solid #000000;\">Phone Number</td><td style=\"border:1px solid #000000;\">Email</td><td style=\"border:1px solid #000000;\">Address</td><td style=\"border:1px solid #000000;\">Total Donation</td><td>Boxes Donated</td></tr>"
 	for order in orders do
 		@str += order.to_table_rw.to_s
 		@str += "\n"
