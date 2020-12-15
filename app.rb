@@ -124,6 +124,10 @@ post "/process_boxes" do
 	session[:boxes] = []
 	session[:other_emails] = []
 	for i in 0..(session[:donation]/50).floor
+		if !emailCheck(params["email#{i}".to_sym])
+			flash[:error] = "Cannot verify if an email is valid! If entering multiple emails in one box, make sure to put a comma (,) between them!"
+			redirect "/memos"
+		end
 		session[:boxes].push([params["type#{i}".to_sym], params["memo#{i}".to_sym]])
 		if(params["email#{i}".to_sym] != "")
 			session[:other_emails].push(params["email#{i}".to_sym])
@@ -151,4 +155,33 @@ end
 
 get "/email_template" do
 	send_file "views/resources/email_template.html"
+end
+
+def emailCheck(emailString)
+	ats = emailString.count('@')
+	if ats == 0 && emailString != ''
+		puts('earliest break! No @')
+		return false		
+	end
+
+	commas = emailString.count(',')
+	if commas >= 1
+		split = emailString.split(',')
+		for email in split
+			if email.count('@') == 0 || email.count('.') == 0
+				puts('Missing @ or . in email')
+				return false
+			elsif (email[email.index('@')..-1]).count('.') == 0
+				puts('Missing . after @ in email')
+				return false
+			end
+		end
+		puts('valid!')
+		return true
+	elsif ats == 1 && commas == 0
+		puts('easiest break, single email')
+		return true
+	end
+
+	return true
 end

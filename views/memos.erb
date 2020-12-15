@@ -25,14 +25,9 @@
     <input type="text" id="memo<%= i %>" name="memo<%= i %>">
     </br>
 
-    <div class="mb-3">
-        <p>If you would like to email the notification of a box purchased in honor of someone else to be sent to them, enter it here. Otherwise, leave this blank.<p>
-        <label for="email">Email</label>
-        <input class="form-control" placeholder="you@example.com" type="email" id="email" name="email<%= i %>">
-        <div class="invalid-feedback">
-            Please enter a valid email address.
-        </div>
-    </div>
+    <p>If you would like to email the notification of a box purchased in honor of someone else to be sent to them, enter it here. If you wish to enter multiple email addresses, seperate them with a comma (,). Otherwise, leave this blank.<p>
+    <label for="email">Email</label>
+    <input placeholder="you@example.com" name="email<%= i %>">
     </br>
 
 <% end %>
