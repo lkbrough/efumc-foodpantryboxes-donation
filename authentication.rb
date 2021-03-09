@@ -29,6 +29,7 @@ def login!
 end
 
 get "/dash" do
+	@type = ENV['type'].downcase
 	if session[:church]
 		redirect "/dashboard"
 	end
@@ -43,14 +44,16 @@ end
 
 get "/dashboard" do
 	authenticate!
+	@type = ENV['type'].downcase
 	erb :dashboard
 end
 
 get "/display_orders" do
 	authenticate!
+	@type = ENV['type'].downcase
 	orders = Order.all
 	@str = "<table width=85% style=\"border-collapse:collapse; border:1px solid #000000;\">"
-	@str += "<tr><td style=\"border:1px solid #000000;\">Purchase ID</td><td style=\"border:1px solid #000000;\">Donator</td><td style=\"border:1px solid #000000;\">Phone Number</td><td style=\"border:1px solid #000000;\">Email</td><td style=\"border:1px solid #000000;\">Address</td><td style=\"border:1px solid #000000;\">Total Donation</td><td>Boxes Donated</td></tr>"
+	@str += "<tr><td>Purchase ID</td><td>Donator</td><td>Phone Number</td><td>Email</td><td>Address</td><td>Total Donation</td><td>Boxes Donated</td><td>Holiday Donated at</td></tr>"
 	for order in orders do
 		@str += order.to_table_rw.to_s
 		@str += "\n"
@@ -62,9 +65,10 @@ end
 
 get "/display_boxes" do
 	authenticate!
+	@type = ENV['type'].downcase
 	boxes = Box.all
 	@str = "<table width=75% style=\"border-collapse:collapse; border:1px solid #000000;\">"
-	@str += "<tr><td style=\"border:1px solid #000000;\">Box ID</td><td style=\"border:1px solid #000000;\">Type</td><td style=\"border:1px solid #000000;\">Type (In words)</td><td style=\"border:1px solid #000000;\">Memo</td><td style=\"border:1px solid #000000;\">Purchase ID</td></tr>"
+	@str += "<tr><td>Box ID</td><td>Type</td><td>Type (In words)</td><td>Memo</td><td>Purchase ID</td></tr>"
 	for box in boxes do
 		@str += box.to_table_rw.to_s
 		@str += "\n"
@@ -87,10 +91,10 @@ post "/email_csv" do
 	$file2.write_orders('boxes.csv')
 
 	message_params = {
-            from: "EFUMC Advent Boxes Donations Admin <mailgun@#{mailgun_domain}>",
+            from: "EFUMC #{ENV['type']} Boxes Donations Admin <mailgun@#{mailgun_domain}>",
             to: email_string.to_s.downcase,
-			subject: "Advent Boxes Excel Sheet",
-			html: "The Advent Boxes csv is attached! You might not know what a csv file is, but it is nearly the same as an excel file (just easier for the program to write).<br/>To open it, follow these steps:<ol><li>Download the attachment.</li><li>Go to the folder where you saved it</li><li>Find the file</li><li>Right click the file</li><li>Hover over Open with...</li><li>Select Excel if it appears in the list or click choose another app and find Excel</li></ol>Excel should immediately recognize the file and split it up into rows and columns.",
+			subject: "#{ENV['type']} Boxes Excel Sheet",
+			html: "The #{ENV['type']} Boxes csv is attached! You might not know what a csv file is, but it is nearly the same as an excel file (just easier for the program to write).<br/>To open it, follow these steps:<ol><li>Download the attachment.</li><li>Go to the folder where you saved it</li><li>Find the file</li><li>Right click the file</li><li>Hover over Open with...</li><li>Select Excel if it appears in the list or click choose another app and find Excel</li></ol>Excel should immediately recognize the file and split it up into rows and columns.",
 			attachment: [File.new('orders.csv'), File.new('boxes.csv')],
 	}
 	mg_client.send_message "#{mailgun_domain}", message_params
@@ -101,12 +105,13 @@ end
 
 get "/add_order" do
 	authenticate!
+	@type = ENV['type'].downcase
 	erb :"authentication/add_order"
 end
 
 post "/add_order" do
 	authenticate!
 	boxes = ((params[:donation].to_i)/ENV['BOX_COST']).floor
-	order = Order.new(params[:fname], params[:lname]+"*", params[:phone], params[:email], params[:donation], params[:line1], params[:line2], params[:city], params[:state], params[:zip], boxes)
+	order = Order.new(params[:fname], params[:lname]+"*", params[:phone], params[:email], params[:donation], params[:line1], params[:line2], params[:city], params[:state], params[:zip], ENV['type'].downcase)
 	redirect "/add_order"
 end

@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@300;400;700&family=Pacifico&display=swap');
+
+#bootstrap-overrides-nav .navbar-brand {
+	font-family: 'Pacifico'; 
+	color: #ffffff; 
+	font-size: 24px;
+}
+
+p {
+	font-family: 'Epilogue';
+	font-size: 18px;
+}
+
+#bootstrap-overrides-nav.navbar.navbar-expand-lg.navbar-dark.fixed-top{
+	background-color: #0A1E33;
+	color: #0A1E33;
+}
+
+#bootstrap-overrides-nav .nav-link {
+	font-family: 'Epilogue';
+}
+
+.home_images {
+	background-color: #000080;
+}
+
+td {
+	border:1px solid #000000;
+}

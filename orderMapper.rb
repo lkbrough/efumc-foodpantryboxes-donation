@@ -17,8 +17,9 @@ class Order
     property :email, String, :default => "None Provided"
     property :purchase_id, String, :default => "ERROR"
     property :address, String, :default => "None Provided"
+    property :holiday, String, :default => "ERROR"
 
-	def initialize(fname, lname, phone, email, total_donation, address_line_1, address_line_2, city, state, zip, purchase_id = nil)
+	def initialize(fname, lname, phone, email, total_donation, address_line_1, address_line_2, city, state, zip, holiday, purchase_id = nil)
 		self.donator = "#{fname.capitalize} #{lname.capitalize}"
         self.total_donation = total_donation
         self.phone_number = phone
@@ -27,6 +28,7 @@ class Order
         current_time = Time.now.getlocal('-05:00')
         purchase_id.nil? ? self.purchase_id = "%02d%03d%02d%02d%02d%02d%02d" % [current_time.year, current_time.yday, current_time.hour, current_time.min, current_time.sec, lname[0].ord, fname[0].ord] : self.purchase_id = purchase_id
         self.boxes = ""
+        self.holiday = "#{holiday.capitalize} #{current_time.year}"
         self.save
     end
 
@@ -45,7 +47,7 @@ class Order
 	end
 
 	def to_comma_delimited
-		comma = "#{self.purchase_id},#{self.donator},#{self.phone_number},#{self.email},#{self.address},#{self.total_donation},#{self.boxes}"
+		comma = "#{self.purchase_id},#{self.donator},#{self.phone_number},#{self.email},#{self.address},#{self.total_donation},#{self.boxes},#{self.holiday}"
 		return comma
 	end
 
@@ -58,6 +60,7 @@ class Order
 		table += "<td style=\"border:1px solid #000000;\">#{self.address}</td>"
         table += "<td style=\"border:1px solid #000000;\">#{self.total_donation}</td>"
         table += "<td style=\"border:1px solid #000000;\">#{self.boxes}</td>"
+        table += "<td style=\"border:1px solid #000000;\">#{self.holiday}</td>"
 		table += "</tr>"
 	end
 end

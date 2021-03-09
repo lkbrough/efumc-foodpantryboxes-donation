@@ -27,15 +27,18 @@ require_relative "payments.rb"
 require_relative "email.rb"
 
 get "/" do
+	@type = ENV['type'].downcase
 	session.clear
 	erb :home
 end
 
 get "/cart" do
+	@type = ENV['type'].downcase
 	erb :cart
 end
 
 get "/memos" do
+	@type = ENV['type'].downcase
 	if session[:donation] > 0 && !session[:donation].nil?
 		@boxes = (session[:donation]/50).floor
 		erb :memos
@@ -46,6 +49,7 @@ get "/memos" do
 end
 
 get "/info" do
+	@type = ENV['type'].downcase
 	if session[:donation] > 0 && !session[:donation].nil?
 		@fname = session[:fname]
 		@lname = session[:lname]
@@ -67,6 +71,7 @@ get "/info" do
 end
 
 get "/checkout" do
+	@type = ENV['type'].downcase
 	if (session[:donation] > 0) && (!session[:fname].nil? && !session[:lname].nil? && !session[:line1].nil? && !session[:city].nil? && !session[:zip].nil? && !session[:email].nil? && !session[:phone].nil?)
 		@donation = session[:donation].to_i
 		@small_loaves = session[:small].to_i
@@ -91,8 +96,9 @@ get "/checkout" do
 end
 
 get "/confirm_purchase" do
+	@type = ENV['type'].downcase
 	if (session[:donation] != 0) && (!session[:fname].nil? && !session[:lname].nil? && !session[:line1].nil? && !session[:city].nil? && !session[:zip].nil? && !session[:email].nil? && !session[:phone].nil?)
-	  	order = Order.new(session[:fname], session[:lname], session[:phone], session[:email], session[:donation], session[:line1], session[:line2], session[:city], session[:state], session[:zip])
+	  	order = Order.new(session[:fname], session[:lname], session[:phone], session[:email], session[:donation], session[:line1], session[:line2], session[:city], session[:state], session[:zip], @type)
 		  for i in 0..session[:boxes].length-1
 			box = Box.new(session[:boxes][i][0], i, session[:fname], session[:lname], order.purchaseId, session[:boxes][i][1])
 			order.addBoxId(box.boxId)
@@ -154,6 +160,7 @@ post "/process_user" do
 end
 
 get "/email_template" do
+	@type = ENV['type'].downcase
 	send_file "views/resources/email_template.html"
 end
 

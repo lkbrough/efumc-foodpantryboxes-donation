@@ -1,12 +1,12 @@
 <div class="container">
 <p>
-    <h1>Welcome to our Food Pantry Advent Box Donation Site!</h1>
+    <h1>Welcome to our Food Pantry <%= @type.capitalize %> Box Donation Site!</h1>
     Click checkout to get started with your donation!<br/>
 </p>
 
 <p>
     <h2>Donation Info</h2>
-    In this hard year, we aim to keep our Christmas mission local instead of our normal global mission. This year's Advent donations will be going to the Edinburg FUMC Food Pantry to provide Advent boxes, similar to our Lent boxes. In addition to our canned goods given out every month, we will include a produce box from Buster Lind and a meat box from Chorizo San Manuel. Thank you for being willing to give!
+    In this hard year, we aim to keep our mission local instead of our normal global mission. This years <%= @type.capitalize %> donations will be going to the Edinburg FUMC Food Pantry to provide <%= @type.capitalize %> boxes. In addition to our canned goods given out every month, we will include a produce box from Buster Lind and a meat box from Chorizo San Manuel. Thank you for being willing to give!
 </p>
 
 <p>
@@ -22,7 +22,7 @@
 
 </div>
 
-<div style="background-color: #000080">
+<div class="home_images">
     <img width="16.3%" height="750" style="object-fit: cover;" src="images/13_2.jpg" alt="A line of cars waiting for the EFUMC food pantry">
     <img width="16.3%" height="750" style="object-fit: fill;" src="images/IMG_9814.JPG" alt="A cross, a star, and an Advent wreath">
     <img width="16.3%" height="750" style="object-fit: cover;" src="images/IMG_9481.JPG" alt="A bunch of food pantry bags and a cross">
