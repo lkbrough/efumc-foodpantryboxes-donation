@@ -28,6 +28,8 @@ class EmailSender
 
         type = ENV['type'].downcase
 
+        year = Time.now.getlocal('-05:00').year
+
         if type == "advent"
             message_params = {
                 from: "EFUMC Advent Boxes Donation <mailgun@#{mailgun_domain}>",
@@ -74,7 +76,7 @@ class EmailSender
                     </div>
                     <p>Donator: #{@fname.to_s.capitalize} #{@lname.to_s.capitalize}<br/>Phone Number: #{@phone}<br/>Email: #{@email_user}</p>
                     <footer class=\"container\">
-                        <p>&copy; Edinburg First United Methodist Church 2020</p>
+                        <p>&copy; Edinburg First United Methodist Church #{year}</p>
                         <a href=\"https://www.facebook.com/EdinburgFUMC\"><img src=\"https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/4b35fa72-cffc-4d46-8eaf-5d9cdb6a80bd/de67vqo-46ca648f-245e-4513-a890-9e9b0180caf6.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvNGIzNWZhNzItY2ZmYy00ZDQ2LThlYWYtNWQ5Y2RiNmE4MGJkXC9kZTY3dnFvLTQ2Y2E2NDhmLTI0NWUtNDUxMy1hODkwLTllOWIwMTgwY2FmNi5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.ftTDzVPf_DHrjsBm4LH9po-Cl1xSrWLxnYtOdE2hx6A\" alt=\"facebook icon\"></a>
                         <a href=\"https://www.youtube.com/channel/UCRaaxQBAreFjfWsj9jaELSw\"><img src=\"https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/4b35fa72-cffc-4d46-8eaf-5d9cdb6a80bd/de67vqj-7f9c2d86-a2d8-46d5-b990-436cfad22657.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvNGIzNWZhNzItY2ZmYy00ZDQ2LThlYWYtNWQ5Y2RiNmE4MGJkXC9kZTY3dnFqLTdmOWMyZDg2LWEyZDgtNDZkNS1iOTkwLTQzNmNmYWQyMjY1Ny5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.k01oHjSFkQ1OgR3ZkxkLHi-uZkIuQH0INEn89Bnsg2k\" alt=\"youtube icon\"></a>
                         <a href=\"https://www.edinburgfumc.org/\"><img src=\"https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/4b35fa72-cffc-4d46-8eaf-5d9cdb6a80bd/de67vqw-3086fb81-9934-4698-bcba-5ea4a4c7575e.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvNGIzNWZhNzItY2ZmYy00ZDQ2LThlYWYtNWQ5Y2RiNmE4MGJkXC9kZTY3dnF3LTMwODZmYjgxLTk5MzQtNDY5OC1iY2JhLTVlYTRhNGM3NTc1ZS5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.owkZMSB55Zo2P_S85gIYDImhuIyWsPUIF_c1Mmn2mLI\" alt=\"church website icon\"></a>
@@ -128,7 +130,7 @@ class EmailSender
                     </div>
                     <p>Donator: #{@fname.to_s.capitalize} #{@lname.to_s.capitalize}<br/>Phone Number: #{@phone}<br/>Email: #{@email_user}</p>
                     <footer class=\"container\">
-                        <p>&copy; Edinburg First United Methodist Church 2020</p>
+                        <p>&copy; Edinburg First United Methodist Church #{year}</p>
                         <a href=\"https://www.facebook.com/EdinburgFUMC\"><img src=\"https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/4b35fa72-cffc-4d46-8eaf-5d9cdb6a80bd/de67vqo-46ca648f-245e-4513-a890-9e9b0180caf6.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvNGIzNWZhNzItY2ZmYy00ZDQ2LThlYWYtNWQ5Y2RiNmE4MGJkXC9kZTY3dnFvLTQ2Y2E2NDhmLTI0NWUtNDUxMy1hODkwLTllOWIwMTgwY2FmNi5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.ftTDzVPf_DHrjsBm4LH9po-Cl1xSrWLxnYtOdE2hx6A\" alt=\"facebook icon\"></a>
                         <a href=\"https://www.youtube.com/channel/UCRaaxQBAreFjfWsj9jaELSw\"><img src=\"https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/4b35fa72-cffc-4d46-8eaf-5d9cdb6a80bd/de67vqj-7f9c2d86-a2d8-46d5-b990-436cfad22657.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvNGIzNWZhNzItY2ZmYy00ZDQ2LThlYWYtNWQ5Y2RiNmE4MGJkXC9kZTY3dnFqLTdmOWMyZDg2LWEyZDgtNDZkNS1iOTkwLTQzNmNmYWQyMjY1Ny5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.k01oHjSFkQ1OgR3ZkxkLHi-uZkIuQH0INEn89Bnsg2k\" alt=\"youtube icon\"></a>
                         <a href=\"https://www.edinburgfumc.org/\"><img src=\"https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/4b35fa72-cffc-4d46-8eaf-5d9cdb6a80bd/de67vqw-3086fb81-9934-4698-bcba-5ea4a4c7575e.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvNGIzNWZhNzItY2ZmYy00ZDQ2LThlYWYtNWQ5Y2RiNmE4MGJkXC9kZTY3dnF3LTMwODZmYjgxLTk5MzQtNDY5OC1iY2JhLTVlYTRhNGM3NTc1ZS5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.owkZMSB55Zo2P_S85gIYDImhuIyWsPUIF_c1Mmn2mLI\" alt=\"church website icon\"></a>

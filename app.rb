@@ -28,17 +28,20 @@ require_relative "email.rb"
 
 get "/" do
 	@type = ENV['type'].downcase
+	@year = Time.now.getlocal('-05:00').year
 	session.clear
 	erb :home
 end
 
 get "/cart" do
 	@type = ENV['type'].downcase
+	@year = Time.now.getlocal('-05:00').year
 	erb :cart
 end
 
 get "/memos" do
 	@type = ENV['type'].downcase
+	@year = Time.now.getlocal('-05:00').year
 	if session[:donation] > 0 && !session[:donation].nil?
 		@boxes = (session[:donation]/50).floor
 		erb :memos
@@ -50,6 +53,7 @@ end
 
 get "/info" do
 	@type = ENV['type'].downcase
+	@year = Time.now.getlocal('-05:00').year
 	if session[:donation] > 0 && !session[:donation].nil?
 		@fname = session[:fname]
 		@lname = session[:lname]
@@ -72,6 +76,7 @@ end
 
 get "/checkout" do
 	@type = ENV['type'].downcase
+	@year = Time.now.getlocal('-05:00').year
 	if (session[:donation] > 0) && (!session[:fname].nil? && !session[:lname].nil? && !session[:line1].nil? && !session[:city].nil? && !session[:zip].nil? && !session[:email].nil? && !session[:phone].nil?)
 		@donation = session[:donation].to_i
 		@small_loaves = session[:small].to_i
@@ -97,6 +102,7 @@ end
 
 get "/confirm_purchase" do
 	@type = ENV['type'].downcase
+	@year = Time.now.getlocal('-05:00').year
 	if (session[:donation] != 0) && (!session[:fname].nil? && !session[:lname].nil? && !session[:line1].nil? && !session[:city].nil? && !session[:zip].nil? && !session[:email].nil? && !session[:phone].nil?)
 	  	order = Order.new(session[:fname], session[:lname], session[:phone], session[:email], session[:donation], session[:line1], session[:line2], session[:city], session[:state], session[:zip], @type)
 		  for i in 0..session[:boxes].length-1
@@ -161,6 +167,7 @@ end
 
 get "/email_template" do
 	@type = ENV['type'].downcase
+	@year = Time.now.getlocal('-05:00').year
 	send_file "views/resources/email_template.html"
 end
 

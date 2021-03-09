@@ -30,6 +30,7 @@ end
 
 get "/dash" do
 	@type = ENV['type'].downcase
+	@year = Time.now.getlocal('-05:00').year
 	if session[:church]
 		redirect "/dashboard"
 	end
@@ -45,12 +46,14 @@ end
 get "/dashboard" do
 	authenticate!
 	@type = ENV['type'].downcase
+	@year = Time.now.getlocal('-05:00').year
 	erb :dashboard
 end
 
 get "/display_orders" do
 	authenticate!
 	@type = ENV['type'].downcase
+	@year = Time.now.getlocal('-05:00').year
 	orders = Order.all
 	@str = "<table width=85% style=\"border-collapse:collapse; border:1px solid #000000;\">"
 	@str += "<tr><td>Purchase ID</td><td>Donator</td><td>Phone Number</td><td>Email</td><td>Address</td><td>Total Donation</td><td>Boxes Donated</td><td>Holiday Donated at</td></tr>"
@@ -66,6 +69,7 @@ end
 get "/display_boxes" do
 	authenticate!
 	@type = ENV['type'].downcase
+	@year = Time.now.getlocal('-05:00').year
 	boxes = Box.all
 	@str = "<table width=75% style=\"border-collapse:collapse; border:1px solid #000000;\">"
 	@str += "<tr><td>Box ID</td><td>Type</td><td>Type (In words)</td><td>Memo</td><td>Purchase ID</td></tr>"
@@ -106,6 +110,7 @@ end
 get "/add_order" do
 	authenticate!
 	@type = ENV['type'].downcase
+	@year = Time.now.getlocal('-05:00').year
 	erb :"authentication/add_order"
 end
 
