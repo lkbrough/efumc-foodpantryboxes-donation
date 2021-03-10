@@ -82,6 +82,16 @@ get "/display_boxes" do
 	erb :"authentication/csv"
 end
 
+get "/clear" do
+	authenticate!
+	if !session['clicked_once']
+		session['clicked_once'] = true
+		flash[:error] = "Have you emailed the orders to the account yet? You should do that before clicking this button. This will clear all the information we have stored and it cannot be restored! If you wish to continue, click the button again."		
+	end
+	redirect "/dashboard"
+end
+
+
 post "/email_csv" do
 	authenticate!
 	email_string = ENV['EMAILS']
@@ -105,6 +115,17 @@ post "/email_csv" do
 
 	flash[:success] = "Email Sent!"
 	redirect "/dashboard"
+end
+
+post "/delete_tables" do
+	authenticate!
+	if session['clicked_once']
+		Box.destroy
+		Order.destroy
+		flash[:success] = "All data cleared. The data cleared cannot be recovered."
+		redirect "/dashboard"
+	end
+	redirect "/clear"
 end
 
 get "/add_order" do
