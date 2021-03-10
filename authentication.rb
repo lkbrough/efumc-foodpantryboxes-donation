@@ -29,7 +29,7 @@ def login!
 end
 
 get "/dash" do
-	@type = ENV['type'].downcase
+	@type = ENV['TYPE'].downcase
 	@year = Time.now.getlocal('-05:00').year
 	if session[:church]
 		redirect "/dashboard"
@@ -45,14 +45,14 @@ end
 
 get "/dashboard" do
 	authenticate!
-	@type = ENV['type'].downcase
+	@type = ENV['TYPE'].downcase
 	@year = Time.now.getlocal('-05:00').year
 	erb :dashboard
 end
 
 get "/display_orders" do
 	authenticate!
-	@type = ENV['type'].downcase
+	@type = ENV['TYPE'].downcase
 	@year = Time.now.getlocal('-05:00').year
 	orders = Order.all
 	@str = "<table width=85% style=\"border-collapse:collapse; border:1px solid #000000;\">"
@@ -68,7 +68,7 @@ end
 
 get "/display_boxes" do
 	authenticate!
-	@type = ENV['type'].downcase
+	@type = ENV['TYPE'].downcase
 	@year = Time.now.getlocal('-05:00').year
 	boxes = Box.all
 	@str = "<table width=75% style=\"border-collapse:collapse; border:1px solid #000000;\">"
@@ -95,10 +95,10 @@ post "/email_csv" do
 	$file2.write_orders('boxes.csv')
 
 	message_params = {
-            from: "EFUMC #{ENV['type']} Boxes Donations Admin <mailgun@#{mailgun_domain}>",
+            from: "EFUMC #{ENV['TYPE']} Boxes Donations Admin <mailgun@#{mailgun_domain}>",
             to: email_string.to_s.downcase,
-			subject: "#{ENV['type']} Boxes Excel Sheet",
-			html: "The #{ENV['type']} Boxes csv is attached! You might not know what a csv file is, but it is nearly the same as an excel file (just easier for the program to write).<br/>To open it, follow these steps:<ol><li>Download the attachment.</li><li>Go to the folder where you saved it</li><li>Find the file</li><li>Right click the file</li><li>Hover over Open with...</li><li>Select Excel if it appears in the list or click choose another app and find Excel</li></ol>Excel should immediately recognize the file and split it up into rows and columns.",
+			subject: "#{ENV['TYPE']} Boxes Excel Sheet",
+			html: "The #{ENV['TYPE']} Boxes csv is attached! You might not know what a csv file is, but it is nearly the same as an excel file (just easier for the program to write).<br/>To open it, follow these steps:<ol><li>Download the attachment.</li><li>Go to the folder where you saved it</li><li>Find the file</li><li>Right click the file</li><li>Hover over Open with...</li><li>Select Excel if it appears in the list or click choose another app and find Excel</li></ol>Excel should immediately recognize the file and split it up into rows and columns.",
 			attachment: [File.new('orders.csv'), File.new('boxes.csv')],
 	}
 	mg_client.send_message "#{mailgun_domain}", message_params
@@ -109,7 +109,7 @@ end
 
 get "/add_order" do
 	authenticate!
-	@type = ENV['type'].downcase
+	@type = ENV['TYPE'].downcase
 	@year = Time.now.getlocal('-05:00').year
 	erb :"authentication/add_order"
 end
