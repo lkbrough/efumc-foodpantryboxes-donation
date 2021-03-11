@@ -2,7 +2,7 @@
 	<div id="totals">
 		<label>Totals</label>
 		<h2>Total Donation:</h2>$<%= sprintf('%.2f', (@donation)) %>
-		<h2>Full Boxes Purchased:</h2><%= @boxes.length %> boxes
+		<h2>Boxes that had the option to name:</h2><%= @boxes.length %> boxes
 		<h2>Memos:</h2>
 		<% for box in @boxes %>
 			<% if box[0] == "1" %>
