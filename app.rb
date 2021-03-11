@@ -88,6 +88,7 @@ get "/checkout" do
 		@zip = session[:zip]
 		@state = session[:state]
 		@boxes = session[:boxes]
+		@boxes_count = (session[:donation]/50.0).ceil
 
 		@units="[{amount: {value: \'#{@donation}\'}}]"
 
@@ -136,7 +137,7 @@ post "/process_boxes" do
 	session[:boxes] = []
 	session[:other_emails] = []
 	for i in 0..(session[:donation]/50).floor
-		if !emailCheck(params["email#{i}".to_sym])
+		if !emailCheck(params["email#{i}".to_sym] || '')
 			flash[:error] = "Cannot verify if an email is valid! If entering multiple emails in one box, make sure to put a comma (,) between them!"
 			redirect "/memos"
 		end
