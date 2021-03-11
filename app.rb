@@ -43,7 +43,7 @@ get "/memos" do
 	@type = ENV['TYPE'].downcase
 	@year = Time.now.getlocal('-05:00').year
 	if session[:donation] > 0 && !session[:donation].nil?
-		@boxes = (session[:donation]/50).floor
+		@boxes = (session[:donation]/50.0).ceil
 		erb :memos
 	else
 		flash[:error] = "Please start a donation first!"

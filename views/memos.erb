@@ -1,6 +1,6 @@
 <div class="container">
 <form action= "/process_boxes" method="POST">
-<% for i in 0..@boxes %>
+<% for i in 0..@boxes-1 %>
     <h1>Box <%= i+1 %>:</h1>
     <h2>Type</h2>
         <input type="radio" id="none<%= i %>" name="type<%= i %>" value="0">
