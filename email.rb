@@ -26,7 +26,7 @@ class EmailSender
             partial_boxes = " and #{((@donation/50.0) % 1.0).to_r} of a box "
         end
 
-        type = ENV['type'].downcase
+        type = ENV['TYPE'].downcase
 
         year = Time.now.getlocal('-05:00').year
 
