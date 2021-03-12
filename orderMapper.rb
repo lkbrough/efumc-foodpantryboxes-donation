@@ -42,7 +42,7 @@ class Order
     end
 
 	def to_csv
-		csv = [self.purchase_id, self.donator, self.phone_number, self.email, self.address, self.total_donation, self.boxes]
+		csv = [self.purchase_id, self.donator, self.phone_number, self.email, self.address, self.total_donation, self.boxes, self.holiday]
 		return csv
 	end
 
@@ -74,7 +74,7 @@ class OrderHandler
     def self.write_orders(filename)
         orders = Order.all
         File.open(filename.to_s, 'w') { |f|
-            f.write("Purchase ID,Donator,Phone Number,Email,Address,Total Donation,Box IDs\n")
+            f.write("Purchase ID,Donator,Phone Number,Email,Address,Total Donation,Box IDs,Time Donated\n")
             orders.each { |line|
                 f.write(line.to_comma_delimited+"\n")
             }
